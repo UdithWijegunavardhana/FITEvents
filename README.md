@@ -1,97 +1,100 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# FIT Events
 
-# Getting Started
+A faculty events app for the Faculty of IT, University of Moratuwa, built live across a 6-session React Native lecture series.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- What the app is: [docs/PROJECT_BRIEF.md](docs/PROJECT_BRIEF.md)
+- What gets built in each session: [docs/ROADMAP.md](docs/ROADMAP.md)
+- Mock backend contract: [docs/API.md](docs/API.md)
 
-## Step 1: Start Metro
+Stack: React Native 0.87 (bare CLI, TypeScript, New Architecture, Hermes), Yarn 4.
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+## Setup
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+**Android is required** for the labs, on Windows or macOS. **iOS is optional** and needs a Mac with Xcode.
+
+### 1. Common (Windows and macOS)
+
+1. **Git**: <https://git-scm.com/downloads>. On Windows this also installs Git Bash, which runs the pre-commit hook.
+2. **Node.js 22 LTS**. Use a version manager so you can switch versions later:
+   - macOS: [nvm](https://github.com/nvm-sh/nvm), then `nvm install` inside the project (it reads `.nvmrc`).
+   - Windows: [nvm-windows](https://github.com/coreybutler/nvm-windows), then `nvm install 22` and `nvm use 22`.
+3. **Yarn 4 via Corepack** (bundled with Node 22). The project pins its Yarn version in `package.json`:
+   ```sh
+   corepack enable        # Windows: run in a terminal opened "as Administrator"
+   yarn --version         # should print 4.10.3 inside the project folder
+   ```
+
+### 2. Android (required)
+
+1. **JDK 17**: [Azul Zulu 17](https://www.azul.com/downloads/?version=java-17-lts&package=jdk) (macOS: `brew install --cask zulu@17`). Set `JAVA_HOME` to its install folder.
+2. **Android Studio**: <https://developer.android.com/studio>. In *Settings → Languages & Frameworks → Android SDK*:
+   - *SDK Platforms*: **Android 16 (API 36)** and **API 37**.
+   - *SDK Tools*: **Android SDK Build-Tools 37**, **Android SDK Command-line Tools**, **Android Emulator**, **Android SDK Platform-Tools**.
+3. **Environment variables**:
+   - macOS (`~/.zshrc`):
+     ```sh
+     export ANDROID_HOME=$HOME/Library/Android/sdk
+     export PATH=$PATH:$ANDROID_HOME/emulator:$ANDROID_HOME/platform-tools
+     ```
+   - Windows (*System Properties → Environment Variables*): add `ANDROID_HOME` = `%LOCALAPPDATA%\Android\Sdk`, and add `%ANDROID_HOME%\platform-tools` and `%ANDROID_HOME%\emulator` to `Path`.
+4. **Emulator**: Android Studio → *Device Manager* → create a Pixel device with a recent system image (x86_64 on Intel/AMD, arm64 on Apple Silicon).
+
+**Windows notes**
+- Clone into a **short path without spaces**, e.g. `C:\dev\FITEvents`. Long paths break the native (CMake) build.
+- Enable hardware virtualisation in BIOS if the emulator refuses to start.
+
+### 3. iOS (optional, macOS only)
+
+1. **Xcode** from the App Store, then open it once to install the iOS simulator and command-line tools.
+2. **Ruby + CocoaPods**: the project's `Gemfile` pins CocoaPods. From the project root:
+   ```sh
+   bundle install
+   cd ios && bundle exec pod install && cd ..
+   ```
+   Re-run `pod install` whenever a native library is added.
+
+## Run the app
 
 ```sh
-# Using npm
-npm start
+git clone <repo-url> FITEvents
+cd FITEvents
+yarn install          # also sets up the git pre-commit hook
 
-# OR using Yarn
-yarn start
+yarn start            # Metro bundler; keep this terminal open
+yarn android          # second terminal: build + launch on the emulator
+yarn ios              # macOS only
 ```
 
-## Step 2: Build and run your app
+The first Android build takes several minutes. Later builds are much faster.
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## Everyday commands
 
-### Android
+| Command | What it does |
+|---|---|
+| `yarn lint` | ESLint (`@react-native` config) |
+| `yarn typecheck` | TypeScript, no output files |
+| `yarn test` | Jest |
 
-```sh
-# Using npm
-npm run android
+Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-commit hook also auto-formats staged files and blocks the commit on type errors.
 
-# OR using Yarn
-yarn android
+## Project layout
+
+```
+src/
+  app/          App.tsx (root component)
+  navigation/   navigators + typed params (S2)
+  features/     one folder per feature (events, bookmarks, auth, …)
+  components/   shared UI
+  services/     API, storage, notifications
+  theme/        colours (light/dark), spacing, typography, radius
+  utils/
 ```
 
-### iOS
+Import from `src` with the `@/` alias, e.g. `import { spacing } from '@/theme';`.
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+## Troubleshooting
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
-yarn ios
-```
-
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
-
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
-
-## Step 3: Modify your app
-
-Now that you have successfully run the app, let's make changes!
-
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
-
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
-
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
-
-## Congratulations! :tada:
-
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- **`yarn` prints 1.x**: run `corepack enable` again, then open a new terminal.
+- **Android build cannot find the SDK**: check `ANDROID_HOME`, or create `android/local.properties` with `sdk.dir=<path to SDK>`.
+- **Stale Metro cache** after switching branches: `yarn start --reset-cache`.
+- **Android build is broken after switching branches**: `cd android && ./gradlew clean` (Windows: `gradlew clean`).
