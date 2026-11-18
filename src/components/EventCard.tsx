@@ -1,4 +1,5 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
+import { Tag } from '@/components/Tag';
 import { CATEGORY_LABELS } from '@/constants';
 import { radius, spacing, typography, useColors } from '@/theme';
 import type { FitEvent } from '@/types/event';
@@ -25,11 +26,7 @@ export function EventCard({ event }: EventCardProps) {
       />
 
       <View style={styles.body}>
-        <View style={[styles.tag, { backgroundColor: colors.accentSubtle }]}>
-          <Text style={[styles.tagText, { color: colors.accent }]}>
-            {CATEGORY_LABELS[event.category]}
-          </Text>
-        </View>
+        <Tag label={CATEGORY_LABELS[event.category]} />
 
         <Text numberOfLines={2} style={[styles.title, { color: colors.text }]}>
           {event.title}
@@ -56,15 +53,6 @@ const styles = StyleSheet.create({
   body: {
     padding: spacing.lg,
     gap: spacing.sm,
-  },
-  tag: {
-    alignSelf: 'flex-start', // shrink to fit the text instead of stretching
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: radius.pill,
-  },
-  tagText: {
-    ...typography.label,
   },
   title: {
     ...typography.heading,

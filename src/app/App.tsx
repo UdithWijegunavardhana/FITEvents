@@ -1,7 +1,6 @@
 import { StatusBar, useColorScheme } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { sampleEvents } from '@/data/sampleEvents';
-import { EventDetailScreen } from '@/screens/EventDetailScreen';
+import { HomeScreen } from '@/screens/HomeScreen';
 
 export function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -9,9 +8,9 @@ export function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      {/* Temporary: there is no navigation until S2, so switch screens here.
-          <HomeScreen /> */}
-      <EventDetailScreen event={sampleEvents[0]} />
+      {/* No navigation until S2. To see the detail screen, temporarily render
+          <EventDetailScreen event={sampleEvents[0]} /> here instead. */}
+      <HomeScreen />
     </SafeAreaProvider>
   );
 }

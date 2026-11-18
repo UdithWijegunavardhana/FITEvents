@@ -1,20 +1,9 @@
-import {
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Button } from '@/components/Button';
+import { Tag } from '@/components/Tag';
 import { CATEGORY_LABELS, DETAIL_LABELS, capacityText } from '@/constants';
-import {
-  minTouchTarget,
-  radius,
-  spacing,
-  typography,
-  useColors,
-} from '@/theme';
+import { radius, spacing, typography, useColors } from '@/theme';
 import type { FitEvent } from '@/types/event';
 import { formatLongDate, formatTimeRange } from '@/utils/formatDate';
 
@@ -58,11 +47,7 @@ export function EventDetailScreen({ event }: EventDetailScreenProps) {
       />
 
       <View style={styles.content}>
-        <View style={[styles.tag, { backgroundColor: colors.accentSubtle }]}>
-          <Text style={[styles.tagText, { color: colors.accent }]}>
-            {CATEGORY_LABELS[event.category]}
-          </Text>
-        </View>
+        <Tag label={CATEGORY_LABELS[event.category]} />
 
         <Text
           accessibilityRole="header"
@@ -100,35 +85,17 @@ export function EventDetailScreen({ event }: EventDetailScreenProps) {
 
         {/* Not wired up yet: bookmarks arrive in S3, registration in S4. */}
         <View style={styles.actions}>
-          <Pressable
+          <Button
             testID="bookmark-button"
-            accessibilityRole="button"
-            accessibilityLabel={DETAIL_LABELS.bookmark}
-            style={({ pressed }) => [
-              styles.button,
-              { borderColor: colors.accent },
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={[styles.buttonText, { color: colors.accent }]}>
-              {DETAIL_LABELS.bookmark}
-            </Text>
-          </Pressable>
-
-          <Pressable
+            label={DETAIL_LABELS.bookmark}
+            variant="secondary"
+            style={styles.actionButton}
+          />
+          <Button
             testID="register-button"
-            accessibilityRole="button"
-            accessibilityLabel={DETAIL_LABELS.register}
-            style={({ pressed }) => [
-              styles.button,
-              { backgroundColor: colors.accent, borderColor: colors.accent },
-              pressed && styles.pressed,
-            ]}
-          >
-            <Text style={[styles.buttonText, { color: colors.onAccent }]}>
-              {DETAIL_LABELS.register}
-            </Text>
-          </Pressable>
+            label={DETAIL_LABELS.register}
+            style={styles.actionButton}
+          />
         </View>
       </View>
     </ScrollView>
@@ -143,15 +110,6 @@ const styles = StyleSheet.create({
   content: {
     padding: spacing.lg,
     gap: spacing.md,
-  },
-  tag: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: spacing.sm,
-    paddingVertical: spacing.xs,
-    borderRadius: radius.pill,
-  },
-  tagText: {
-    ...typography.label,
   },
   title: {
     ...typography.title,
@@ -186,18 +144,7 @@ const styles = StyleSheet.create({
     gap: spacing.md,
     marginTop: spacing.sm,
   },
-  button: {
+  actionButton: {
     flex: 1, // both buttons share the row equally
-    minHeight: minTouchTarget,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: radius.md,
-    borderWidth: 1,
-  },
-  buttonText: {
-    ...typography.button,
-  },
-  pressed: {
-    opacity: 0.7,
   },
 });
