@@ -8,11 +8,31 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
   social: 'Social',
 };
 
+// Order of the category chips on Home.
+export const CATEGORY_FILTERS: EventCategory[] = [
+  'workshop',
+  'talk',
+  'hackathon',
+  'career',
+  'social',
+];
+
+export const FILTER_LABELS = {
+  all: 'All',
+  searchPlaceholder: 'Search events',
+  searchAccessibility: 'Search events by title, venue or organiser',
+};
+
 export const HOME_TITLE = 'Upcoming events';
 
 export const EVENTS_EMPTY = {
   title: 'No upcoming events',
   message: 'Check back soon for new events.',
+};
+
+export const EVENTS_NO_MATCH = {
+  title: 'No matching events',
+  message: 'Try another category or search term.',
 };
 
 export const EVENT_DETAIL_TITLE = 'Event';
