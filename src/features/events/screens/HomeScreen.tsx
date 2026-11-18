@@ -1,8 +1,8 @@
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { EventCard } from '@/components/EventCard';
-import { HOME_TITLE } from '@/constants';
-import { sampleEvents } from '@/data/sampleEvents';
+import { EventCard } from '@/features/events/components/EventCard';
+import { HOME_TITLE } from '@/features/events/constants';
+import { mockEvents } from '@/features/events/mockEvents';
 import { spacing, typography, useColors } from '@/theme';
 
 export function HomeScreen() {
@@ -29,7 +29,7 @@ export function HomeScreen() {
         {HOME_TITLE}
       </Text>
 
-      {sampleEvents.map(event => (
+      {mockEvents.map(event => (
         <EventCard key={event.id} event={event} />
       ))}
     </ScrollView>

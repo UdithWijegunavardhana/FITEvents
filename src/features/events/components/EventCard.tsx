@@ -1,9 +1,9 @@
 import { Image, StyleSheet, Text, View } from 'react-native';
 import { Tag } from '@/components/Tag';
-import { CATEGORY_LABELS } from '@/constants';
+import { CATEGORY_LABELS } from '@/features/events/constants';
 import { radius, spacing, typography, useColors } from '@/theme';
-import type { FitEvent } from '@/types/event';
-import { formatShortDate } from '@/utils/formatDate';
+import type { FitEvent } from '@/features/events/types';
+import { formatShortDate } from '@/features/events/utils/formatDate';
 
 type EventCardProps = {
   event: FitEvent;

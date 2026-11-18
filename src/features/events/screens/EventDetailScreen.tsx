@@ -2,10 +2,17 @@ import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@/components/Button';
 import { Tag } from '@/components/Tag';
-import { CATEGORY_LABELS, DETAIL_LABELS, capacityText } from '@/constants';
+import {
+  CATEGORY_LABELS,
+  DETAIL_LABELS,
+  capacityText,
+} from '@/features/events/constants';
 import { radius, spacing, typography, useColors } from '@/theme';
-import type { FitEvent } from '@/types/event';
-import { formatLongDate, formatTimeRange } from '@/utils/formatDate';
+import type { FitEvent } from '@/features/events/types';
+import {
+  formatLongDate,
+  formatTimeRange,
+} from '@/features/events/utils/formatDate';
 
 type EventDetailScreenProps = {
   event: FitEvent;

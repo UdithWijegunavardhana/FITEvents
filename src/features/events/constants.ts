@@ -1,4 +1,4 @@
-import type { EventCategory } from '@/types/event';
+import type { EventCategory } from '@/features/events/types';
 
 export const CATEGORY_LABELS: Record<EventCategory, string> = {
   workshop: 'Workshop',

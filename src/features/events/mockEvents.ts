@@ -1,7 +1,7 @@
-import type { FitEvent } from '@/types/event';
+import type { FitEvent } from '@/features/events/types';
 
 // Hardcoded data for S1. S3 replaces this with the mock API.
-export const sampleEvents: FitEvent[] = [
+export const mockEvents: FitEvent[] = [
   {
     id: 'evt-001',
     title: 'Hands-on React Native: Build Your First Mobile App',
