@@ -7,3 +7,5 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
   career: 'Career',
   social: 'Social',
 };
+
+export const HOME_TITLE = 'Upcoming events';
