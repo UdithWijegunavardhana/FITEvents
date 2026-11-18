@@ -1,5 +1,7 @@
-import { ScrollView, StyleSheet } from 'react-native';
+import { FlatList, StyleSheet } from 'react-native';
+import { EmptyState } from '@/components/EmptyState';
 import { EventCard } from '@/features/events/components/EventCard';
+import { EVENTS_EMPTY } from '@/features/events/constants';
 import { mockEvents } from '@/features/events/mockEvents';
 import type { HomeStackScreenProps } from '@/navigation/types';
 import { spacing, useColors } from '@/theme';
@@ -9,27 +11,38 @@ import { spacing, useColors } from '@/theme';
 export function HomeScreen({ navigation }: HomeStackScreenProps<'Home'>) {
   const colors = useColors();
 
+  // FlatList only renders the rows near the screen, unlike ScrollView +
+  // map, which renders every event up front.
   return (
-    <ScrollView
+    <FlatList
       testID="home-screen"
-      style={{ backgroundColor: colors.background }}
-      contentContainerStyle={styles.content}
-    >
-      {mockEvents.map(event => (
+      data={mockEvents}
+      // A stable, unique key per row lets React reuse rows correctly.
+      keyExtractor={item => item.id}
+      renderItem={({ item }) => (
         <EventCard
-          key={event.id}
-          event={event}
+          event={item}
           onPress={() =>
-            navigation.navigate('EventDetail', { eventId: event.id })
+            navigation.navigate('EventDetail', { eventId: item.id })
           }
         />
-      ))}
-    </ScrollView>
+      )}
+      ListEmptyComponent={
+        <EmptyState
+          testID="events-empty"
+          title={EVENTS_EMPTY.title}
+          message={EVENTS_EMPTY.message}
+        />
+      }
+      style={{ backgroundColor: colors.background }}
+      contentContainerStyle={styles.content}
+    />
   );
 }
 
 const styles = StyleSheet.create({
   content: {
+    flexGrow: 1, // lets the empty state fill the screen and centre itself
     padding: spacing.lg,
     gap: spacing.lg, // space between cards, no margins needed
   },

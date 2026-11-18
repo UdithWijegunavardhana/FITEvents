@@ -10,6 +10,11 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
 
 export const HOME_TITLE = 'Upcoming events';
 
+export const EVENTS_EMPTY = {
+  title: 'No upcoming events',
+  message: 'Check back soon for new events.',
+};
+
 export const EVENT_DETAIL_TITLE = 'Event';
 
 export const EVENT_NOT_FOUND = {
