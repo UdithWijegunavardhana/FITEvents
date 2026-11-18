@@ -45,6 +45,9 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
 const styles = StyleSheet.create({
   row: {
     paddingHorizontal: spacing.lg,
+    // Touches outside a parent's bounds are ignored, so leave room for
+    // the chips' hitSlop inside the row.
+    paddingVertical: spacing.xs,
     gap: spacing.sm,
   },
 });

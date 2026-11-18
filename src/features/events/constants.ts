@@ -21,7 +21,10 @@ export const FILTER_LABELS = {
   all: 'All',
   searchPlaceholder: 'Search events',
   searchAccessibility: 'Search events by title, venue or organiser',
+  chipHint: 'Filters the event list',
 };
+
+export const EVENT_CARD_HINT = 'Opens event details';
 
 export const HOME_TITLE = 'Upcoming events';
 

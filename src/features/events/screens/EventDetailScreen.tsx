@@ -59,6 +59,7 @@ export function EventDetailScreen({
     >
       <Image
         source={{ uri: event.imageUrl }}
+        accessibilityIgnoresInvertColors
         style={[styles.image, { backgroundColor: colors.border }]}
       />
 
@@ -79,7 +80,9 @@ export function EventDetailScreen({
           ]}
         >
           {details.map(item => (
-            <View key={item.label} style={styles.detailRow}>
+            // `accessible` groups the row so a screen reader reads
+            // "When, Wednesday 25 November ..." as one item.
+            <View key={item.label} accessible style={styles.detailRow}>
               <Text
                 style={[styles.detailLabel, { color: colors.textSecondary }]}
               >
@@ -92,7 +95,10 @@ export function EventDetailScreen({
           ))}
         </View>
 
-        <Text style={[styles.sectionTitle, { color: colors.text }]}>
+        <Text
+          accessibilityRole="header"
+          style={[styles.sectionTitle, { color: colors.text }]}
+        >
           {DETAIL_LABELS.about}
         </Text>
         <Text style={[styles.description, { color: colors.text }]}>

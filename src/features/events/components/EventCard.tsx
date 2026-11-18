@@ -1,6 +1,13 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  Image,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Tag } from '@/components/Tag';
-import { CATEGORY_LABELS } from '@/features/events/constants';
+import { CATEGORY_LABELS, EVENT_CARD_HINT } from '@/features/events/constants';
 import { radius, spacing, typography, useColors } from '@/theme';
 import type { FitEvent } from '@/features/events/types';
 import { formatShortDate } from '@/features/events/utils/formatDate';
@@ -12,21 +19,33 @@ type EventCardProps = {
 
 export function EventCard({ event, onPress }: EventCardProps) {
   const colors = useColors();
+  const date = formatShortDate(event.startsAt);
 
   return (
     <Pressable
       testID={`event-card-${event.id}`}
       accessibilityRole="button"
-      accessibilityLabel={event.title}
+      // One spoken sentence for the whole card; screen readers would
+      // otherwise read the tag, title and meta line as separate stops.
+      accessibilityLabel={`${event.title}. ${
+        CATEGORY_LABELS[event.category]
+      }, ${date}, ${event.venue}`}
+      accessibilityHint={EVENT_CARD_HINT}
       onPress={onPress}
       style={({ pressed }) => [
         styles.card,
-        { backgroundColor: colors.surface, borderColor: colors.border },
+        {
+          backgroundColor: colors.surface,
+          borderColor: colors.border,
+          shadowColor: colors.shadow,
+        },
         pressed && styles.pressed,
       ]}
     >
       <Image
         source={{ uri: event.imageUrl }}
+        // Photos keep their real colours when iOS Smart Invert is on.
+        accessibilityIgnoresInvertColors
         style={[styles.image, { backgroundColor: colors.border }]}
       />
 
@@ -38,7 +57,7 @@ export function EventCard({ event, onPress }: EventCardProps) {
         </Text>
 
         <Text style={[styles.meta, { color: colors.textSecondary }]}>
-          {formatShortDate(event.startsAt)} · {event.venue}
+          {date} · {event.venue}
         </Text>
       </View>
     </Pressable>
@@ -49,11 +68,26 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
-    overflow: 'hidden', // clips the image to the rounded corners
+    // Shadows are different APIs per platform: iOS draws a layer shadow
+    // from four props, Android uses a single Material `elevation`.
+    ...Platform.select({
+      ios: {
+        shadowOpacity: 0.08,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   },
   image: {
     width: '100%',
     aspectRatio: 16 / 9,
+    // Round only the image's top corners. (overflow: 'hidden' on the card
+    // would also clip the iOS shadow.)
+    borderTopLeftRadius: radius.lg,
+    borderTopRightRadius: radius.lg,
   },
   body: {
     padding: spacing.lg,

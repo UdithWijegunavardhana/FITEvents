@@ -1,4 +1,5 @@
 import { Pressable, StyleSheet, Text } from 'react-native';
+import { FILTER_LABELS } from '@/features/events/constants';
 import { radius, spacing, typography, useColors } from '@/theme';
 
 type FilterChipProps = {
@@ -21,7 +22,11 @@ export function FilterChip({
       testID={testID}
       accessibilityRole="button"
       accessibilityLabel={label}
+      accessibilityHint={FILTER_LABELS.chipHint}
       accessibilityState={{ selected }}
+      // The chip is drawn 36pt tall; hitSlop grows the touch area to the
+      // 44pt minimum without changing how it looks.
+      hitSlop={CHIP_HIT_SLOP}
       onPress={onPress}
       style={({ pressed }) => [
         styles.chip,
@@ -42,6 +47,10 @@ export function FilterChip({
     </Pressable>
   );
 }
+
+// Vertical only: horizontally the chips sit 8pt apart, so a side slop
+// would make neighbouring chips' touch areas overlap.
+const CHIP_HIT_SLOP = { top: spacing.xs, bottom: spacing.xs };
 
 const styles = StyleSheet.create({
   chip: {

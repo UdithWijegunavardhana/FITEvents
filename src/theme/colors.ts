@@ -7,6 +7,7 @@ const palette = {
   maroon50: '#F8E6EC',
   maroon900: '#3D0A1A',
   white: '#FFFFFF',
+  black: '#000000',
   gray50: '#F7F7F8',
   gray100: '#EDEDF0',
   gray300: '#C9C9D1',
@@ -32,6 +33,7 @@ export type ColorTokens = {
   onAccent: string;
   error: string;
   success: string;
+  shadow: string;
 };
 
 export const lightColors: ColorTokens = {
@@ -45,6 +47,7 @@ export const lightColors: ColorTokens = {
   onAccent: palette.white,
   error: palette.red500,
   success: palette.green600,
+  shadow: palette.black,
 };
 
 export const darkColors: ColorTokens = {
@@ -58,4 +61,5 @@ export const darkColors: ColorTokens = {
   onAccent: palette.gray950,
   error: palette.red300,
   success: palette.green300,
+  shadow: palette.black,
 };
