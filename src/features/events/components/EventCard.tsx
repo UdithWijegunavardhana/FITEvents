@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import { Tag } from '@/components/Tag';
 import { CATEGORY_LABELS } from '@/features/events/constants';
 import { radius, spacing, typography, useColors } from '@/theme';
@@ -7,17 +7,22 @@ import { formatShortDate } from '@/features/events/utils/formatDate';
 
 type EventCardProps = {
   event: FitEvent;
+  onPress: () => void;
 };
 
-export function EventCard({ event }: EventCardProps) {
+export function EventCard({ event, onPress }: EventCardProps) {
   const colors = useColors();
 
   return (
-    <View
+    <Pressable
       testID={`event-card-${event.id}`}
-      style={[
+      accessibilityRole="button"
+      accessibilityLabel={event.title}
+      onPress={onPress}
+      style={({ pressed }) => [
         styles.card,
         { backgroundColor: colors.surface, borderColor: colors.border },
+        pressed && styles.pressed,
       ]}
     >
       <Image
@@ -36,7 +41,7 @@ export function EventCard({ event }: EventCardProps) {
           {formatShortDate(event.startsAt)} · {event.venue}
         </Text>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -59,5 +64,8 @@ const styles = StyleSheet.create({
   },
   meta: {
     ...typography.caption,
+  },
+  pressed: {
+    opacity: 0.7,
   },
 });

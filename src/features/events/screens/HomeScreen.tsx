@@ -1,36 +1,28 @@
-import { ScrollView, StyleSheet, Text } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { ScrollView, StyleSheet } from 'react-native';
 import { EventCard } from '@/features/events/components/EventCard';
-import { HOME_TITLE } from '@/features/events/constants';
 import { mockEvents } from '@/features/events/mockEvents';
-import { spacing, typography, useColors } from '@/theme';
+import type { HomeStackScreenProps } from '@/navigation/types';
+import { spacing, useColors } from '@/theme';
 
-export function HomeScreen() {
+// `navigation` comes from the stack navigator; its type knows every screen
+// in HomeStackParamList and the params each one needs.
+export function HomeScreen({ navigation }: HomeStackScreenProps<'Home'>) {
   const colors = useColors();
-  // Keep content clear of the notch / status bar and the home indicator.
-  const insets = useSafeAreaInsets();
 
   return (
     <ScrollView
       testID="home-screen"
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={[
-        styles.content,
-        {
-          paddingTop: insets.top + spacing.lg,
-          paddingBottom: insets.bottom + spacing.lg,
-        },
-      ]}
+      contentContainerStyle={styles.content}
     >
-      <Text
-        accessibilityRole="header"
-        style={[styles.title, { color: colors.text }]}
-      >
-        {HOME_TITLE}
-      </Text>
-
       {mockEvents.map(event => (
-        <EventCard key={event.id} event={event} />
+        <EventCard
+          key={event.id}
+          event={event}
+          onPress={() =>
+            navigation.navigate('EventDetail', { eventId: event.id })
+          }
+        />
       ))}
     </ScrollView>
   );
@@ -38,10 +30,7 @@ export function HomeScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    paddingHorizontal: spacing.lg,
+    padding: spacing.lg,
     gap: spacing.lg, // space between cards, no margins needed
-  },
-  title: {
-    ...typography.title,
   },
 });

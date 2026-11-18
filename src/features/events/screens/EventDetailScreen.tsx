@@ -1,26 +1,38 @@
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Button } from '@/components/Button';
+import { EmptyState } from '@/components/EmptyState';
 import { Tag } from '@/components/Tag';
 import {
   CATEGORY_LABELS,
   DETAIL_LABELS,
+  EVENT_NOT_FOUND,
   capacityText,
 } from '@/features/events/constants';
-import { radius, spacing, typography, useColors } from '@/theme';
-import type { FitEvent } from '@/features/events/types';
+import { mockEvents } from '@/features/events/mockEvents';
 import {
   formatLongDate,
   formatTimeRange,
 } from '@/features/events/utils/formatDate';
+import type { HomeStackScreenProps } from '@/navigation/types';
+import { radius, spacing, typography, useColors } from '@/theme';
 
-type EventDetailScreenProps = {
-  event: FitEvent;
-};
-
-export function EventDetailScreen({ event }: EventDetailScreenProps) {
+export function EventDetailScreen({
+  route,
+}: HomeStackScreenProps<'EventDetail'>) {
   const colors = useColors();
-  const insets = useSafeAreaInsets();
+  // The screen receives only an id and looks the event up itself.
+  // (From S3 this lookup becomes an API call.)
+  const event = mockEvents.find(item => item.id === route.params.eventId);
+
+  if (!event) {
+    return (
+      <EmptyState
+        testID="event-not-found"
+        title={EVENT_NOT_FOUND.title}
+        message={EVENT_NOT_FOUND.message}
+      />
+    );
+  }
 
   // Label + value pairs, rendered as rows below.
   const details = [
@@ -43,10 +55,7 @@ export function EventDetailScreen({ event }: EventDetailScreenProps) {
     <ScrollView
       testID="event-detail-screen"
       style={{ backgroundColor: colors.background }}
-      contentContainerStyle={{
-        paddingTop: insets.top,
-        paddingBottom: insets.bottom + spacing.lg,
-      }}
+      contentContainerStyle={styles.scrollContent}
     >
       <Image
         source={{ uri: event.imageUrl }}
@@ -110,6 +119,9 @@ export function EventDetailScreen({ event }: EventDetailScreenProps) {
 }
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    paddingBottom: spacing.lg,
+  },
   image: {
     width: '100%',
     aspectRatio: 16 / 9,
