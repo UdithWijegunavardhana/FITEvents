@@ -12,3 +12,27 @@ export function formatShortDate(iso: string): string {
     timeZone: TIME_ZONE,
   });
 }
+
+// "Wednesday, 25 November 2026"
+export function formatLongDate(iso: string): string {
+  return new Date(iso).toLocaleDateString(LOCALE, {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+    timeZone: TIME_ZONE,
+  });
+}
+
+// "2:00 pm – 5:00 pm"
+export function formatTimeRange(startIso: string, endIso: string): string {
+  const options: Intl.DateTimeFormatOptions = {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true,
+    timeZone: TIME_ZONE,
+  };
+  const start = new Date(startIso).toLocaleTimeString(LOCALE, options);
+  const end = new Date(endIso).toLocaleTimeString(LOCALE, options);
+  return `${start} – ${end}`;
+}

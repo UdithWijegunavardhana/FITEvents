@@ -7,4 +7,5 @@ export const typography = {
   body: { fontSize: 16, lineHeight: 22, fontWeight: '400' },
   caption: { fontSize: 13, lineHeight: 18, fontWeight: '400' },
   label: { fontSize: 13, lineHeight: 18, fontWeight: '600' },
+  button: { fontSize: 15, lineHeight: 20, fontWeight: '600' },
 } satisfies Record<string, TextStyle>;
