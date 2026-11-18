@@ -1,12 +1,8 @@
-import {
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { getColors, spacing, typography } from '@/theme';
+import { EventCard } from '@/components/EventCard';
+import { sampleEvents } from '@/data/sampleEvents';
+import { getColors, spacing } from '@/theme';
 
 export function App() {
   const scheme = useColorScheme();
@@ -21,10 +17,7 @@ export function App() {
         style={[styles.container, { backgroundColor: colors.background }]}
         testID="app-root"
       >
-        <Text style={[styles.title, { color: colors.accent }]}>FIT Events</Text>
-        <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
-          Faculty of IT · University of Moratuwa
-        </Text>
+        <EventCard event={sampleEvents[0]} />
       </View>
     </SafeAreaProvider>
   );
@@ -33,15 +26,7 @@ export function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.lg,
-    gap: spacing.sm,
-  },
-  title: {
-    ...typography.title,
-  },
-  subtitle: {
-    ...typography.body,
   },
 });

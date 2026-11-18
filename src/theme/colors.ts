@@ -4,6 +4,8 @@
 const palette = {
   maroon600: '#8A1538',
   maroon300: '#E07A98',
+  maroon50: '#F8E6EC',
+  maroon900: '#3D0A1A',
   white: '#FFFFFF',
   gray50: '#F7F7F8',
   gray100: '#EDEDF0',
@@ -26,6 +28,7 @@ export type ColorTokens = {
   textSecondary: string;
   border: string;
   accent: string;
+  accentSubtle: string;
   onAccent: string;
   error: string;
   success: string;
@@ -38,6 +41,7 @@ export const lightColors: ColorTokens = {
   textSecondary: palette.gray500,
   border: palette.gray100,
   accent: palette.maroon600,
+  accentSubtle: palette.maroon50,
   onAccent: palette.white,
   error: palette.red500,
   success: palette.green600,
@@ -50,6 +54,7 @@ export const darkColors: ColorTokens = {
   textSecondary: palette.gray300,
   border: palette.gray700,
   accent: palette.maroon300,
+  accentSubtle: palette.maroon900,
   onAccent: palette.gray950,
   error: palette.red300,
   success: palette.green300,
