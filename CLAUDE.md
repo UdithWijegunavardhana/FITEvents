@@ -1,44 +1,3 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Project state
-
-FITEvents is a freshly bootstrapped React Native CLI app (not Expo) — React Native 0.87.1, React 19.2, TypeScript. `App.tsx` still renders the template `NewAppScreen`; no app features, navigation, state management, or styling library exist yet. Node >= 22.11 is required.
-
-## Commands
-
-```sh
-npm start                    # Metro bundler (run first, in its own terminal)
-npm run ios                  # build + run on iOS simulator
-npm run android              # build + run on Android emulator/device
-npm run lint                 # eslint . (@react-native config)
-npm test                     # jest (@react-native/jest-preset)
-npx jest __tests__/App.test.tsx   # single test file
-npx jest -t "renders correctly"   # single test by name
-npx tsc --noEmit             # type-check (no script defined for this)
-```
-
-iOS native deps (first clone, and after adding/updating any native module):
-
-```sh
-bundle install               # once, installs CocoaPods via Gemfile
-cd ios && bundle exec pod install
-```
-
-## Architecture
-
-- Entry: `index.js` registers `App` under the name from `app.json` (`FITEvents`). That name must match the native module name in `ios/FITEvents/AppDelegate.swift` and `android/app/src/main/java/com/fitevents/MainActivity.kt` — change all three together.
-- `App.tsx` wraps the tree in `SafeAreaProvider` (react-native-safe-area-context); read insets via `useSafeAreaInsets()` below it.
-- New Architecture and Hermes are enabled (`android/gradle.properties`: `newArchEnabled=true`, `hermesEnabled=true`). Any native library added must support the New Architecture.
-- Android package / bundle namespace: `com.fitevents`.
-- Tests use `react-test-renderer` with `act()`; native modules not covered by the jest preset will need mocks.
-
-## Conventions
-
-- Prettier: single quotes, trailing commas everywhere, `arrowParens: 'avoid'` (prettier 2.8.8).
-- ESLint extends `@react-native`; TS config extends `@react-native/typescript-config`.
-
 # FIT Events — Claude Code guide
 
 FIT Events is a faculty events app for the University of Moratuwa, Faculty of IT. It is built **live, session by session** in a 6-session React Native lecture series for 3rd-year students. The code is teaching material first and a product second.
@@ -95,11 +54,18 @@ Features: `events`, `eventDetail`, `bookmarks`, `auth`, `profile`, `checkIn`.
 
 ## Commands
 
-- `yarn start` · `yarn android:dev` · `yarn ios:dev`
-- `yarn mock` (json-server on port 3001)
-- `yarn lint` · `yarn typecheck` · `yarn test` · `yarn e2e`
+Yarn 4 (via Corepack, `nodeLinker: node-modules`), Node 22 (`.nvmrc`). `.yarnrc.yml` sets a 14-day `npmMinimalAgeGate`, so installs only pick versions at least 14 days old.
 
-Before every commit: `yarn lint && yarn typecheck && yarn test`.
+- `yarn start` · `yarn android` · `yarn ios` (`yarn android:dev` / `yarn ios:dev` added in S4 with flavors)
+- `yarn lint` · `yarn typecheck` · `yarn test`
+- `yarn mock` (json-server on port 3001; added in S3) · `yarn e2e` (Maestro; added in S5)
+- iOS native deps (macOS, after adding any native module): `cd ios && bundle exec pod install`
+
+Before every commit: `yarn lint && yarn typecheck && yarn test`. The husky pre-commit hook runs lint-staged (eslint --fix + prettier) and `yarn typecheck`.
+
+The `@/` alias (→ `src/`) is defined in three places that must stay in sync: `babel.config.js`, `tsconfig.json` (`paths`), and `jest.config.js` (`moduleNameMapper`).
+
+The app name `FITEvents` (`app.json`) must match `ios/FITEvents/AppDelegate.swift` and `android/app/src/main/java/com/fitevents/MainActivity.kt`. Change all three together.
 
 ## Never
 
