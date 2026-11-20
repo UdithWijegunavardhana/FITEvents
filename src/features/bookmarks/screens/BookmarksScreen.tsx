@@ -3,7 +3,6 @@ import { EmptyState } from '@/components/EmptyState';
 import { useColors } from '@/theme';
 import { BOOKMARKS_EMPTY } from '@/features/bookmarks/constants';
 
-// Placeholder tab: bookmarking arrives in S3.
 export function BookmarksScreen() {
   const colors = useColors();
 

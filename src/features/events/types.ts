@@ -1,5 +1,3 @@
-// Shapes from docs/PROJECT_BRIEF.md. The mock API (S3) returns the same shape.
-
 export type EventCategory =
   | 'workshop'
   | 'talk'
@@ -12,8 +10,8 @@ export interface FitEvent {
   title: string;
   description: string;
   category: EventCategory;
-  startsAt: string; // ISO 8601
-  endsAt: string; // ISO 8601
+  startsAt: string;
+  endsAt: string;
   venue: string;
   organizer: string;
   imageUrl: string;

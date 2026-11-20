@@ -10,8 +10,6 @@ export function getColors(scheme: ColorSchemeName | null): ColorTokens {
   return scheme === 'dark' ? darkColors : lightColors;
 }
 
-// Picks the light or dark token set from the device setting.
-// (S3 swaps this for a ThemeContext with an in-app toggle.)
 export function useColors(): ColorTokens {
   return getColors(useColorScheme());
 }

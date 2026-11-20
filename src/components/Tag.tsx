@@ -17,7 +17,7 @@ export function Tag({ label }: TagProps) {
 
 const styles = StyleSheet.create({
   tag: {
-    alignSelf: 'flex-start', // shrink to fit the text instead of stretching
+    alignSelf: 'flex-start',
     paddingHorizontal: spacing.sm,
     paddingVertical: spacing.xs,
     borderRadius: radius.pill,

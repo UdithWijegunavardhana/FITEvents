@@ -41,7 +41,7 @@ Features: `events`, `eventDetail`, `bookmarks`, `auth`, `profile`, `checkIn`.
 - Strict TypeScript. No `any` (use `unknown` + narrowing). Typed navigation params.
 - Styles: `StyleSheet.create` at the bottom of the file; values from `src/theme`. No inline styles except truly dynamic values.
 - User-facing strings in the feature's `constants.ts`.
-- Comments explain **why**, not what. Add a short header comment to files that introduce a new concept (e.g. "RTK Query: caches server data and tracks loading/error for us").
+- No code comments in JS/TS source or config. Explanations belong in the lecture, commit messages and `docs/`.
 - Every touchable has `accessibilityRole` and a label; every element used in tests has a `testID`.
 - Handle loading, error (with retry) and empty states on every data screen.
 

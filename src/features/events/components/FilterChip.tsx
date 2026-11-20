@@ -24,8 +24,6 @@ export function FilterChip({
       accessibilityLabel={label}
       accessibilityHint={FILTER_LABELS.chipHint}
       accessibilityState={{ selected }}
-      // The chip is drawn 36pt tall; hitSlop grows the touch area to the
-      // 44pt minimum without changing how it looks.
       hitSlop={CHIP_HIT_SLOP}
       onPress={onPress}
       style={({ pressed }) => [
@@ -48,8 +46,6 @@ export function FilterChip({
   );
 }
 
-// Vertical only: horizontally the chips sit 8pt apart, so a side slop
-// would make neighbouring chips' touch areas overlap.
 const CHIP_HIT_SLOP = { top: spacing.xs, bottom: spacing.xs };
 
 const styles = StyleSheet.create({

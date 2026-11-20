@@ -1,6 +1,5 @@
 import type { EventCategory, FitEvent } from '@/features/events/types';
 
-// A plain function (no React) so the same rules are easy to test and reuse.
 export function filterEvents(
   events: FitEvent[],
   category: EventCategory | null,

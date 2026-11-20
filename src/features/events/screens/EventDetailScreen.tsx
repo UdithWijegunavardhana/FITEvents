@@ -20,8 +20,6 @@ export function EventDetailScreen({
   route,
 }: HomeStackScreenProps<'EventDetail'>) {
   const colors = useColors();
-  // The screen receives only an id and looks the event up itself.
-  // (From S3 this lookup becomes an API call.)
   const event = mockEvents.find(item => item.id === route.params.eventId);
 
   if (!event) {
@@ -34,7 +32,6 @@ export function EventDetailScreen({
     );
   }
 
-  // Label + value pairs, rendered as rows below.
   const details = [
     {
       label: DETAIL_LABELS.when,
@@ -80,8 +77,6 @@ export function EventDetailScreen({
           ]}
         >
           {details.map(item => (
-            // `accessible` groups the row so a screen reader reads
-            // "When, Wednesday 25 November ..." as one item.
             <View key={item.label} accessible style={styles.detailRow}>
               <Text
                 style={[styles.detailLabel, { color: colors.textSecondary }]}
@@ -105,7 +100,6 @@ export function EventDetailScreen({
           {event.description}
         </Text>
 
-        {/* Not wired up yet: bookmarks arrive in S3, registration in S4. */}
         <View style={styles.actions}>
           <Button
             testID="bookmark-button"
@@ -146,16 +140,16 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
   },
   detailRow: {
-    flexDirection: 'row', // label on the left, value on the right
+    flexDirection: 'row',
     gap: spacing.md,
   },
   detailLabel: {
     ...typography.label,
-    width: 88, // fixed column so all values line up
+    width: 88,
   },
   detailValue: {
     ...typography.body,
-    flex: 1, // take the remaining width and wrap inside it
+    flex: 1,
   },
   sectionTitle: {
     ...typography.heading,
@@ -170,6 +164,6 @@ const styles = StyleSheet.create({
     marginTop: spacing.sm,
   },
   actionButton: {
-    flex: 1, // both buttons share the row equally
+    flex: 1,
   },
 });

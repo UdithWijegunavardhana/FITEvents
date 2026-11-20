@@ -1,5 +1,3 @@
-// Native stack: each screen is a real native screen (UINavigationController
-// on iOS, Fragment on Android), so headers and swipe-back feel native.
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { EVENT_DETAIL_TITLE, HOME_TITLE } from '@/features/events/constants';
 import { EventDetailScreen } from '@/features/events/screens/EventDetailScreen';
@@ -10,11 +8,7 @@ const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 export function HomeStack() {
   return (
-    <Stack.Navigator
-      // Chevron only: a long previous title ("Upcoming events") would
-      // crowd the detail screen's own title.
-      screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}
-    >
+    <Stack.Navigator screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}>
       <Stack.Screen
         name="Home"
         component={HomeScreen}

@@ -12,8 +12,6 @@ test('renders the Home tab first', async () => {
     renderer?.root.findAllByProps({ testID: 'home-screen' }).length,
   ).toBeGreaterThan(0);
 
-  // Unmount inside act so navigation's pending updates finish before Jest
-  // tears the environment down.
   await ReactTestRenderer.act(async () => {
     renderer?.unmount();
   });

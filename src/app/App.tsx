@@ -12,7 +12,6 @@ export function App() {
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      {/* NavigationContainer holds the navigation state for the whole app. */}
       <NavigationContainer theme={getNavigationTheme(colors, isDarkMode)}>
         <RootTabs />
       </NavigationContainer>

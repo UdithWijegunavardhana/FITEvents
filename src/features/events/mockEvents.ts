@@ -1,6 +1,5 @@
 import type { FitEvent } from '@/features/events/types';
 
-// Hardcoded data for S1. S3 replaces this with the mock API.
 export const mockEvents: FitEvent[] = [
   {
     id: 'evt-001',

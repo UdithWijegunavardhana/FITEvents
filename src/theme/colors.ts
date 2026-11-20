@@ -1,6 +1,3 @@
-// Design tokens: components read colours by role ("text", "surface"),
-// never by hex value, so light and dark mode are just two token sets.
-
 const palette = {
   maroon600: '#8A1538',
   maroon300: '#E07A98',

@@ -9,13 +9,10 @@ import type { EventCategory } from '@/features/events/types';
 import { spacing } from '@/theme';
 
 type CategoryFilterProps = {
-  // null means "All".
   selected: EventCategory | null;
   onSelect: (category: EventCategory | null) => void;
 };
 
-// Controlled component: the parent owns the selected category and passes
-// it down; this component only reports taps through onSelect.
 export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
   return (
     <ScrollView
@@ -45,8 +42,6 @@ export function CategoryFilter({ selected, onSelect }: CategoryFilterProps) {
 const styles = StyleSheet.create({
   row: {
     paddingHorizontal: spacing.lg,
-    // Touches outside a parent's bounds are ignored, so leave room for
-    // the chips' hitSlop inside the row.
     paddingVertical: spacing.xs,
     gap: spacing.sm,
   },

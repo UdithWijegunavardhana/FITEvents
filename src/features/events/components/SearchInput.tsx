@@ -24,7 +24,6 @@ export function SearchInput({ value, onChangeText }: SearchInputProps) {
         { backgroundColor: colors.surface, borderColor: colors.border },
       ]}
     >
-      {/* Decorative: the input's own label already says "search". */}
       <Ionicons
         name="search"
         size={18}
@@ -60,6 +59,6 @@ const styles = StyleSheet.create({
   },
   input: {
     ...typography.body,
-    flex: 1, // take all the width next to the icon
+    flex: 1,
   },
 });

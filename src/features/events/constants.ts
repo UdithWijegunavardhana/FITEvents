@@ -8,7 +8,6 @@ export const CATEGORY_LABELS: Record<EventCategory, string> = {
   social: 'Social',
 };
 
-// Order of the category chips on Home.
 export const CATEGORY_FILTERS: EventCategory[] = [
   'workshop',
   'talk',

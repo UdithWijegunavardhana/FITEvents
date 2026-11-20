@@ -25,8 +25,6 @@ export function EventCard({ event, onPress }: EventCardProps) {
     <Pressable
       testID={`event-card-${event.id}`}
       accessibilityRole="button"
-      // One spoken sentence for the whole card; screen readers would
-      // otherwise read the tag, title and meta line as separate stops.
       accessibilityLabel={`${event.title}. ${
         CATEGORY_LABELS[event.category]
       }, ${date}, ${event.venue}`}
@@ -44,7 +42,6 @@ export function EventCard({ event, onPress }: EventCardProps) {
     >
       <Image
         source={{ uri: event.imageUrl }}
-        // Photos keep their real colours when iOS Smart Invert is on.
         accessibilityIgnoresInvertColors
         style={[styles.image, { backgroundColor: colors.border }]}
       />
@@ -68,8 +65,6 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: radius.lg,
     borderWidth: StyleSheet.hairlineWidth,
-    // Shadows are different APIs per platform: iOS draws a layer shadow
-    // from four props, Android uses a single Material `elevation`.
     ...Platform.select({
       ios: {
         shadowOpacity: 0.08,
@@ -84,8 +79,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     aspectRatio: 16 / 9,
-    // Round only the image's top corners. (overflow: 'hidden' on the card
-    // would also clip the iOS shadow.)
     borderTopLeftRadius: radius.lg,
     borderTopRightRadius: radius.lg,
   },

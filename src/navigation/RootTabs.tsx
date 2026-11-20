@@ -13,9 +13,6 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 
 type TabIconProps = { focused: boolean; color: string; size: number };
 
-// Builds a tab icon: filled when the tab is active, outline otherwise.
-// Created once here, outside the component, so React doesn't see a new
-// component type on every render.
 function tabIcon(active: IoniconsIconName, inactive: IoniconsIconName) {
   return ({ focused, color, size }: TabIconProps) => (
     <Ionicons name={focused ? active : inactive} color={color} size={size} />
@@ -34,7 +31,6 @@ export function RootTabs() {
         component={HomeStack}
         options={{
           title: TAB_LABELS.home,
-          // The stack inside draws its own header.
           headerShown: false,
           tabBarButtonTestID: 'tab-home',
           tabBarIcon: homeIcon,

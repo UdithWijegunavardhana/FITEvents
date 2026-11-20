@@ -3,7 +3,6 @@ import { EmptyState } from '@/components/EmptyState';
 import { useColors } from '@/theme';
 import { PROFILE_SIGNED_OUT } from '@/features/profile/constants';
 
-// Placeholder tab: sign-in arrives in S4.
 export function ProfileScreen() {
   const colors = useColors();
 

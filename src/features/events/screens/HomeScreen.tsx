@@ -11,16 +11,11 @@ import { filterEvents } from '@/features/events/utils/filterEvents';
 import type { HomeStackScreenProps } from '@/navigation/types';
 import { spacing, useColors } from '@/theme';
 
-// `navigation` comes from the stack navigator; its type knows every screen
-// in HomeStackParamList and the params each one needs.
 export function HomeScreen({ navigation }: HomeStackScreenProps<'Home'>) {
   const colors = useColors();
-  // Local UI state: only this screen cares about it, so no Redux needed.
   const [category, setCategory] = useState<EventCategory | null>(null);
   const [query, setQuery] = useState('');
 
-  // Derived data: recomputed only when the inputs change, not on every
-  // render. Never store the filtered list in state; it would go stale.
   const visibleEvents = useMemo(
     () => filterEvents(mockEvents, category, query),
     [category, query],
@@ -39,12 +34,9 @@ export function HomeScreen({ navigation }: HomeStackScreenProps<'Home'>) {
         <CategoryFilter selected={category} onSelect={setCategory} />
       </View>
 
-      {/* FlatList only renders the rows near the screen, unlike
-          ScrollView + map, which renders every event up front. */}
       <FlatList
         testID="event-list"
         data={visibleEvents}
-        // A stable, unique key per row lets React reuse rows correctly.
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
           <EventCard
@@ -61,8 +53,6 @@ export function HomeScreen({ navigation }: HomeStackScreenProps<'Home'>) {
             message={emptyText.message}
           />
         }
-        // Tapping a card while the keyboard is open should open the card,
-        // not just close the keyboard.
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         contentContainerStyle={styles.listContent}
@@ -80,8 +70,8 @@ const styles = StyleSheet.create({
     gap: spacing.md,
   },
   listContent: {
-    flexGrow: 1, // lets the empty state fill the screen and centre itself
+    flexGrow: 1,
     padding: spacing.lg,
-    gap: spacing.lg, // space between cards, no margins needed
+    gap: spacing.lg,
   },
 });

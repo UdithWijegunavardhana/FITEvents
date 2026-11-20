@@ -27,7 +27,7 @@ export function EmptyState({ title, message, testID }: EmptyStateProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1, // fill the space so the text sits in the middle
+    flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.xl,
