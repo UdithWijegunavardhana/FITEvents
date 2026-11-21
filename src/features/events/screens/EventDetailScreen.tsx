@@ -1,10 +1,14 @@
 import { Button } from '@/components/Button';
+import { getErrorMessage, isNotFoundError } from '@/api/errors';
 import { EmptyState } from '@/components/EmptyState';
+import { ErrorState } from '@/components/ErrorState';
+import { LoadingScreen } from '@/components/LoadingScreen';
 import { Tag } from '@/components/Tag';
 import { useGetEventByIdQuery } from '@/features/events/api/events.api';
 import {
   CATEGORY_LABELS,
   DETAIL_LABELS,
+  EVENT_LOADING_LABEL,
   EVENT_NOT_FOUND,
   capacityText,
 } from '@/features/events/constants';
@@ -21,7 +25,27 @@ export function EventDetailScreen({
   route,
 }: Readonly<HomeStackScreenProps<typeof ROUTES.EVENT_DETAIL>>) {
   const colors = useColors();
-  const { data: event } = useGetEventByIdQuery(route.params.eventId);
+  const {
+    data: event,
+    isLoading,
+    isError,
+    error,
+    refetch,
+  } = useGetEventByIdQuery(route.params.eventId);
+
+  if (isLoading) {
+    return <LoadingScreen label={EVENT_LOADING_LABEL} testID="event-loading" />;
+  }
+
+  if (!event && isError && !isNotFoundError(error)) {
+    return (
+      <ErrorState
+        testID="event-error"
+        message={getErrorMessage(error)}
+        onRetry={refetch}
+      />
+    );
+  }
 
   if (!event) {
     return (

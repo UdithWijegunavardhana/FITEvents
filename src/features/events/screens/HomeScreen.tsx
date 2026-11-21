@@ -1,11 +1,18 @@
 import { useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+import { getErrorMessage } from '@/api/errors';
 import { EmptyState } from '@/components/EmptyState';
+import { ErrorState } from '@/components/ErrorState';
+import { LoadingScreen } from '@/components/LoadingScreen';
 import { CategoryFilter } from '@/features/events/components/CategoryFilter';
 import { useGetEventsQuery } from '@/features/events/api/events.api';
 import { EventCard } from '@/features/events/components/EventCard';
 import { SearchInput } from '@/features/events/components/SearchInput';
-import { EVENTS_EMPTY, EVENTS_NO_MATCH } from '@/features/events/constants';
+import {
+  EVENTS_EMPTY,
+  EVENTS_LOADING_LABEL,
+  EVENTS_NO_MATCH,
+} from '@/features/events/constants';
 import type { EventCategory } from '@/features/events/types';
 import { filterEvents } from '@/features/events/utils/filterEvents';
 import { ROUTES } from '@/navigation/routes';
@@ -16,7 +23,14 @@ export function HomeScreen({
   navigation,
 }: Readonly<HomeStackScreenProps<typeof ROUTES.HOME>>) {
   const colors = useColors();
-  const { data: events } = useGetEventsQuery();
+  const {
+    data: events,
+    isLoading,
+    isFetching,
+    isError,
+    error,
+    refetch,
+  } = useGetEventsQuery();
   const [category, setCategory] = useState<EventCategory | null>(null);
   const [query, setQuery] = useState('');
 
@@ -25,8 +39,25 @@ export function HomeScreen({
     [events, category, query],
   );
 
+  const isRefreshing = isFetching && !isLoading;
   const isFiltering = category !== null || query.trim() !== '';
   const emptyText = isFiltering ? EVENTS_NO_MATCH : EVENTS_EMPTY;
+
+  if (isLoading) {
+    return (
+      <LoadingScreen label={EVENTS_LOADING_LABEL} testID="events-loading" />
+    );
+  }
+
+  if (isError && !events) {
+    return (
+      <ErrorState
+        testID="events-error"
+        message={getErrorMessage(error)}
+        onRetry={refetch}
+      />
+    );
+  }
 
   return (
     <View
@@ -57,6 +88,8 @@ export function HomeScreen({
             message={emptyText.message}
           />
         }
+        refreshing={isRefreshing}
+        onRefresh={refetch}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         contentContainerStyle={styles.listContent}

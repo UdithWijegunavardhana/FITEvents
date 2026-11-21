@@ -37,6 +37,10 @@ export const EVENTS_NO_MATCH = {
   message: 'Try another category or search term.',
 };
 
+export const EVENTS_LOADING_LABEL = 'Loading events';
+
+export const EVENT_LOADING_LABEL = 'Loading event';
+
 export const EVENT_DETAIL_TITLE = 'Event';
 
 export const EVENT_NOT_FOUND = {
