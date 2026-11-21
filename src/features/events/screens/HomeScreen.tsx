@@ -1,11 +1,15 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-import { getErrorMessage } from '@/api/errors';
 import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { CategoryFilter } from '@/features/events/components/CategoryFilter';
-import { useGetEventsQuery } from '@/features/events/api/events.api';
+import {
+  selectEvents,
+  selectEventsError,
+  selectEventsLoading,
+} from '@/features/events/redux/eventsSelectors';
+import { eventsSagaActions } from '@/features/events/saga/eventsSagaActions';
 import { EventCard } from '@/features/events/components/EventCard';
 import { SearchInput } from '@/features/events/components/SearchInput';
 import {
@@ -17,29 +21,40 @@ import type { EventCategory } from '@/features/events/types';
 import { filterEvents } from '@/features/events/utils/filterEvents';
 import { ROUTES } from '@/navigation/routes';
 import type { HomeStackScreenProps } from '@/navigation/types';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { spacing, useColors } from '@/theme';
 
 export function HomeScreen({
   navigation,
 }: Readonly<HomeStackScreenProps<typeof ROUTES.HOME>>) {
   const colors = useColors();
-  const {
-    data: events,
-    isLoading,
-    isFetching,
-    isError,
-    error,
-    refetch,
-  } = useGetEventsQuery();
+  // Saga version. The RTK Query version of these lines was:
+  //   const { data, isLoading, isFetching, isError, error, refetch } =
+  //     useGetEventsQuery();
+  const dispatch = useAppDispatch();
+  const events = useAppSelector(selectEvents);
+  const loading = useAppSelector(selectEventsLoading);
+  const error = useAppSelector(selectEventsError);
+
+  const fetchEvents = useCallback(() => {
+    dispatch(eventsSagaActions.fetchEvents());
+  }, [dispatch]);
+
+  useEffect(() => {
+    fetchEvents();
+  }, [fetchEvents]);
+
   const [category, setCategory] = useState<EventCategory | null>(null);
   const [query, setQuery] = useState('');
 
   const visibleEvents = useMemo(
-    () => filterEvents(events ?? [], category, query),
+    () => filterEvents(events, category, query),
     [events, category, query],
   );
 
-  const isRefreshing = isFetching && !isLoading;
+  const hasEvents = events.length > 0;
+  const isLoading = loading && !hasEvents;
+  const isRefreshing = loading && hasEvents;
   const isFiltering = category !== null || query.trim() !== '';
   const emptyText = isFiltering ? EVENTS_NO_MATCH : EVENTS_EMPTY;
 
@@ -49,13 +64,9 @@ export function HomeScreen({
     );
   }
 
-  if (isError && !events) {
+  if (error !== null && !hasEvents) {
     return (
-      <ErrorState
-        testID="events-error"
-        message={getErrorMessage(error)}
-        onRetry={refetch}
-      />
+      <ErrorState testID="events-error" message={error} onRetry={fetchEvents} />
     );
   }
 
@@ -89,7 +100,7 @@ export function HomeScreen({
           />
         }
         refreshing={isRefreshing}
-        onRefresh={refetch}
+        onRefresh={fetchEvents}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         contentContainerStyle={styles.listContent}
