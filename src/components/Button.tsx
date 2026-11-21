@@ -1,3 +1,4 @@
+import { minTouchTarget, radius, typography, useColors } from '@/theme';
 import {
   Pressable,
   StyleSheet,
@@ -5,7 +6,6 @@ import {
   type StyleProp,
   type ViewStyle,
 } from 'react-native';
-import { minTouchTarget, radius, typography, useColors } from '@/theme';
 
 type ButtonProps = {
   label: string;
@@ -21,7 +21,7 @@ export function Button({
   variant = 'primary',
   style,
   testID,
-}: ButtonProps) {
+}: Readonly<ButtonProps>) {
   const colors = useColors();
   const isPrimary = variant === 'primary';
 

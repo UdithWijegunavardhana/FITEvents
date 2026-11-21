@@ -1,6 +1,6 @@
-import { Pressable, StyleSheet, Text } from 'react-native';
 import { FILTER_LABELS } from '@/features/events/constants';
 import { radius, spacing, typography, useColors } from '@/theme';
+import { Pressable, StyleSheet, Text } from 'react-native';
 
 type FilterChipProps = {
   label: string;
@@ -14,7 +14,7 @@ export function FilterChip({
   selected,
   onPress,
   testID,
-}: FilterChipProps) {
+}: Readonly<FilterChipProps>) {
   const colors = useColors();
 
   return (

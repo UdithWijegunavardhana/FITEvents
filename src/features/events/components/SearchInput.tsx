@@ -1,5 +1,3 @@
-import { Ionicons } from '@react-native-vector-icons/ionicons/static';
-import { StyleSheet, TextInput, View } from 'react-native';
 import { FILTER_LABELS } from '@/features/events/constants';
 import {
   minTouchTarget,
@@ -8,13 +6,18 @@ import {
   typography,
   useColors,
 } from '@/theme';
+import { Ionicons } from '@react-native-vector-icons/ionicons/static';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 type SearchInputProps = {
   value: string;
   onChangeText: (text: string) => void;
 };
 
-export function SearchInput({ value, onChangeText }: SearchInputProps) {
+export function SearchInput({
+  value,
+  onChangeText,
+}: Readonly<SearchInputProps>) {
   const colors = useColors();
 
   return (

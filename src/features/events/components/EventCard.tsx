@@ -1,3 +1,8 @@
+import { Tag } from '@/components/Tag';
+import { CATEGORY_LABELS, EVENT_CARD_HINT } from '@/features/events/constants';
+import type { FitEvent } from '@/features/events/types';
+import { formatShortDate } from '@/features/events/utils/formatDate';
+import { radius, spacing, typography, useColors } from '@/theme';
 import {
   Image,
   Platform,
@@ -6,18 +11,13 @@ import {
   Text,
   View,
 } from 'react-native';
-import { Tag } from '@/components/Tag';
-import { CATEGORY_LABELS, EVENT_CARD_HINT } from '@/features/events/constants';
-import { radius, spacing, typography, useColors } from '@/theme';
-import type { FitEvent } from '@/features/events/types';
-import { formatShortDate } from '@/features/events/utils/formatDate';
 
 type EventCardProps = {
   event: FitEvent;
   onPress: () => void;
 };
 
-export function EventCard({ event, onPress }: EventCardProps) {
+export function EventCard({ event, onPress }: Readonly<EventCardProps>) {
   const colors = useColors();
   const date = formatShortDate(event.startsAt);
 
