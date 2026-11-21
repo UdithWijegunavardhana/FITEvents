@@ -4,16 +4,17 @@ import type {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
+import type { ROUTES } from '@/navigation/routes';
 
 export type HomeStackParamList = {
-  Home: undefined;
-  EventDetail: { eventId: string };
+  [ROUTES.HOME]: undefined;
+  [ROUTES.EVENT_DETAIL]: { eventId: string };
 };
 
 export type RootTabParamList = {
-  HomeTab: NavigatorScreenParams<HomeStackParamList>;
-  Bookmarks: undefined;
-  Profile: undefined;
+  [ROUTES.HOME_TAB]: NavigatorScreenParams<HomeStackParamList>;
+  [ROUTES.BOOKMARKS]: undefined;
+  [ROUTES.PROFILE]: undefined;
 };
 
 export type HomeStackScreenProps<T extends keyof HomeStackParamList> =

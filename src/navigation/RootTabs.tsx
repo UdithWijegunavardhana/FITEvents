@@ -7,6 +7,7 @@ import { BookmarksScreen } from '@/features/bookmarks/screens/BookmarksScreen';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
 import { TAB_LABELS } from '@/navigation/constants';
 import { HomeStack } from '@/navigation/HomeStack';
+import { ROUTES } from '@/navigation/routes';
 import type { RootTabParamList } from '@/navigation/types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -27,7 +28,7 @@ export function RootTabs() {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        name="HomeTab"
+        name={ROUTES.HOME_TAB}
         component={HomeStack}
         options={{
           title: TAB_LABELS.home,
@@ -37,7 +38,7 @@ export function RootTabs() {
         }}
       />
       <Tab.Screen
-        name="Bookmarks"
+        name={ROUTES.BOOKMARKS}
         component={BookmarksScreen}
         options={{
           title: TAB_LABELS.bookmarks,
@@ -46,7 +47,7 @@ export function RootTabs() {
         }}
       />
       <Tab.Screen
-        name="Profile"
+        name={ROUTES.PROFILE}
         component={ProfileScreen}
         options={{
           title: TAB_LABELS.profile,

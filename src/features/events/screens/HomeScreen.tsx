@@ -8,10 +8,13 @@ import { EVENTS_EMPTY, EVENTS_NO_MATCH } from '@/features/events/constants';
 import { mockEvents } from '@/features/events/mockEvents';
 import type { EventCategory } from '@/features/events/types';
 import { filterEvents } from '@/features/events/utils/filterEvents';
+import { ROUTES } from '@/navigation/routes';
 import type { HomeStackScreenProps } from '@/navigation/types';
 import { spacing, useColors } from '@/theme';
 
-export function HomeScreen({ navigation }: HomeStackScreenProps<'Home'>) {
+export function HomeScreen({
+  navigation,
+}: Readonly<HomeStackScreenProps<typeof ROUTES.HOME>>) {
   const colors = useColors();
   const [category, setCategory] = useState<EventCategory | null>(null);
   const [query, setQuery] = useState('');
@@ -42,7 +45,7 @@ export function HomeScreen({ navigation }: HomeStackScreenProps<'Home'>) {
           <EventCard
             event={item}
             onPress={() =>
-              navigation.navigate('EventDetail', { eventId: item.id })
+              navigation.navigate(ROUTES.EVENT_DETAIL, { eventId: item.id })
             }
           />
         )}

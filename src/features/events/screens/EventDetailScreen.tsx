@@ -13,12 +13,13 @@ import {
   formatLongDate,
   formatTimeRange,
 } from '@/features/events/utils/formatDate';
+import type { ROUTES } from '@/navigation/routes';
 import type { HomeStackScreenProps } from '@/navigation/types';
 import { radius, spacing, typography, useColors } from '@/theme';
 
 export function EventDetailScreen({
   route,
-}: HomeStackScreenProps<'EventDetail'>) {
+}: HomeStackScreenProps<typeof ROUTES.EVENT_DETAIL>) {
   const colors = useColors();
   const event = mockEvents.find(item => item.id === route.params.eventId);
 
