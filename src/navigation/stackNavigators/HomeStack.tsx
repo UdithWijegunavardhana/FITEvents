@@ -9,7 +9,10 @@ const Stack = createNativeStackNavigator<HomeStackParamList>();
 
 export function HomeStack() {
   return (
-    <Stack.Navigator screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}>
+    <Stack.Navigator
+      initialRouteName={ROUTES.HOME}
+      screenOptions={{ headerBackButtonDisplayMode: 'minimal' }}
+    >
       <Stack.Screen
         name={ROUTES.HOME}
         component={HomeScreen}
