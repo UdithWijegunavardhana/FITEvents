@@ -95,13 +95,16 @@ Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-comm
 
 ```
 src/
-  app/          App.tsx (root component)
-  navigation/   navigators + typed params (S2)
-  features/     one folder per feature (events, bookmarks, auth, …)
+  app/          App.tsx and root providers
+  api/          RTK Query base API and config
+  redux/        store, root reducer, typed hooks
+  contexts/     React contexts (theme)
+  navigation/   AppNavigator, tabs, stacks, typed params
+  features/     one folder per feature: api/ redux/ screens/ components/
   components/   shared UI
-  services/     API, storage, notifications
+  services/     secure storage, notifications (S4)
   theme/        colours (light/dark), spacing, typography, radius
-  utils/
+  utils/        storage (MMKV) and helpers
 ```
 
 Import from `src` with the `@/` alias, e.g. `import { spacing } from '@/theme';`.

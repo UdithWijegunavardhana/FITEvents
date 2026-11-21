@@ -1,13 +1,13 @@
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { Tag } from '@/components/Tag';
+import { useGetEventByIdQuery } from '@/features/events/api/events.api';
 import {
   CATEGORY_LABELS,
   DETAIL_LABELS,
   EVENT_NOT_FOUND,
   capacityText,
 } from '@/features/events/constants';
-import { mockEvents } from '@/features/events/mockEvents';
 import {
   formatLongDate,
   formatTimeRange,
@@ -21,7 +21,7 @@ export function EventDetailScreen({
   route,
 }: Readonly<HomeStackScreenProps<typeof ROUTES.EVENT_DETAIL>>) {
   const colors = useColors();
-  const event = mockEvents.find(item => item.id === route.params.eventId);
+  const { data: event } = useGetEventByIdQuery(route.params.eventId);
 
   if (!event) {
     return (

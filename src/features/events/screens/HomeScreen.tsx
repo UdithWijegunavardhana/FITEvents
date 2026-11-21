@@ -2,10 +2,10 @@ import { useMemo, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { EmptyState } from '@/components/EmptyState';
 import { CategoryFilter } from '@/features/events/components/CategoryFilter';
+import { useGetEventsQuery } from '@/features/events/api/events.api';
 import { EventCard } from '@/features/events/components/EventCard';
 import { SearchInput } from '@/features/events/components/SearchInput';
 import { EVENTS_EMPTY, EVENTS_NO_MATCH } from '@/features/events/constants';
-import { mockEvents } from '@/features/events/mockEvents';
 import type { EventCategory } from '@/features/events/types';
 import { filterEvents } from '@/features/events/utils/filterEvents';
 import { ROUTES } from '@/navigation/routes';
@@ -16,12 +16,13 @@ export function HomeScreen({
   navigation,
 }: Readonly<HomeStackScreenProps<typeof ROUTES.HOME>>) {
   const colors = useColors();
+  const { data: events } = useGetEventsQuery();
   const [category, setCategory] = useState<EventCategory | null>(null);
   const [query, setQuery] = useState('');
 
   const visibleEvents = useMemo(
-    () => filterEvents(mockEvents, category, query),
-    [category, query],
+    () => filterEvents(events ?? [], category, query),
+    [events, category, query],
   );
 
   const isFiltering = category !== null || query.trim() !== '';

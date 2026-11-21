@@ -20,19 +20,22 @@ Before adding **any** dependency: confirm on npm/GitHub that the current stable 
 
 ```
 src/
-  app/            App.tsx, providers, store setup
-  navigation/     navigators + typed param lists
+  app/            App.tsx and root providers
+  api/            RTK Query base API and config (baseApi.ts, config.ts)
+  redux/          store.ts, rootReducer.ts, hooks.ts, listener middleware
+  contexts/       React contexts (ThemeContext)
+  navigation/     AppNavigator, BottomTabNavigator, stackNavigators/, routes.ts, types.ts
   features/
-    <feature>/    screens/ components/ api/ store/ hooks/ utils/ constants.ts types.ts
+    <feature>/    api/ redux/ screens/ components/ utils/ constants.ts types.ts
   components/     shared UI (atoms/molecules)
-  services/       api base (RTK Query), storage, secure storage, notifications
+  services/       secure storage, notifications (added in S4)
   theme/          colors, spacing, typography
-  utils/
+  utils/          storage.ts (MMKV instance) and other helpers
 mock-server/      db.json, routes, seed script
 e2e/              Maestro flows
 ```
 
-Features: `events`, `eventDetail`, `bookmarks`, `auth`, `profile`, `checkIn`.
+Features: `events` (list and detail), `bookmarks`, `auth`, `profile`, `checkIn`. Layout follows the TechCart reference app: per feature `api/` (endpoints), `redux/` (slice, selectors, listeners), `screens/`, `components/`.
 
 ## Coding rules (teaching code)
 
