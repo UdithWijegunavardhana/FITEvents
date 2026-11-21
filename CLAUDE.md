@@ -50,7 +50,7 @@ Features: `events`, `eventDetail`, `bookmarks`, `auth`, `profile`, `checkIn`.
 - Only build what `docs/ROADMAP.md` lists for the current session. Do not build ahead.
 - Work in small steps. Each step = one commit, message `s<N>: <what>` (e.g. `s2: add bottom tab navigator`). These commits are the live-demo checkpoints.
 - End of session: everything green, then tag `s<N>-end`.
-- Never rewrite history on `main` or move existing tags.
+- Never rewrite history on `main` or move existing tags. (One approved exception, 2026-11-21: commit author and co-author trailers were rewritten before the first public use.)
 
 ## Commands
 
