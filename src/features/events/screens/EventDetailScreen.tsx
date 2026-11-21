@@ -1,4 +1,3 @@
-import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { Button } from '@/components/Button';
 import { EmptyState } from '@/components/EmptyState';
 import { Tag } from '@/components/Tag';
@@ -16,10 +15,11 @@ import {
 import type { ROUTES } from '@/navigation/routes';
 import type { HomeStackScreenProps } from '@/navigation/types';
 import { radius, spacing, typography, useColors } from '@/theme';
+import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export function EventDetailScreen({
   route,
-}: HomeStackScreenProps<typeof ROUTES.EVENT_DETAIL>) {
+}: Readonly<HomeStackScreenProps<typeof ROUTES.EVENT_DETAIL>>) {
   const colors = useColors();
   const event = mockEvents.find(item => item.id === route.params.eventId);
 
