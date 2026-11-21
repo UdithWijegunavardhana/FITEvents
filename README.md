@@ -67,6 +67,17 @@ yarn ios              # macOS only
 
 The first Android build takes several minutes. Later builds are much faster.
 
+### Mock API (from S3)
+
+The app loads events from a local mock server. Start it in its own terminal and keep it running:
+
+```sh
+yarn mock             # http://localhost:3001
+adb reverse tcp:3001 tcp:3001   # Android emulator only, once per emulator start
+```
+
+iOS simulators reach it at `localhost` directly. See [docs/API.md](docs/API.md) for the endpoints, and for `?_delay=` and `?_fail=1`, which help demo loading and error states.
+
 ## Everyday commands
 
 | Command | What it does |
@@ -74,6 +85,9 @@ The first Android build takes several minutes. Later builds are much faster.
 | `yarn lint` | ESLint (`@react-native` config) |
 | `yarn typecheck` | TypeScript, no output files |
 | `yarn test` | Jest |
+| `yarn mock` | Mock API on port 3001 |
+| `yarn mock:seed` | Regenerate `mock-server/db.json` |
+| `yarn mock:qr <eventId>` | QR code PNG for check-in (`mock-server/qr/`) |
 
 Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-commit hook also auto-formats staged files and blocks the commit on type errors.
 
