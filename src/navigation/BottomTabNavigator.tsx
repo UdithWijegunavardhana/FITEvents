@@ -2,10 +2,16 @@ import { Ionicons } from '@react-native-vector-icons/ionicons/static';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BookmarksScreen } from '@/features/bookmarks/screens/BookmarksScreen';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
-import { TAB_CONFIG } from '@/navigation/constants';
+import { selectBookmarkCount } from '@/features/bookmarks/redux/bookmarksSelectors';
+import {
+  bookmarksTabLabel,
+  MAX_BADGE_COUNT,
+  TAB_CONFIG,
+} from '@/navigation/constants';
 import { ROUTES } from '@/navigation/routes';
 import { HomeStack } from '@/navigation/stackNavigators/HomeStack';
 import type { RootTabParamList } from '@/navigation/types';
+import { useAppSelector } from '@/redux/hooks';
 import { useColors } from '@/theme';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -28,6 +34,11 @@ const tabBarIcons = {
 
 export function BottomTabNavigator() {
   const colors = useColors();
+  const bookmarkCount = useAppSelector(selectBookmarkCount);
+  const badgeStyle = {
+    backgroundColor: colors.accent,
+    color: colors.onAccent,
+  };
 
   return (
     <Tab.Navigator
@@ -37,6 +48,19 @@ export function BottomTabNavigator() {
         tabBarIcon: tabBarIcons[route.name],
         tabBarActiveTintColor: colors.accent,
         tabBarInactiveTintColor: colors.textSecondary,
+        tabBarBadgeStyle: badgeStyle,
+        ...(route.name === ROUTES.BOOKMARKS && bookmarkCount > 0
+          ? {
+              tabBarBadge:
+                bookmarkCount > MAX_BADGE_COUNT
+                  ? `${MAX_BADGE_COUNT}+`
+                  : bookmarkCount,
+              tabBarAccessibilityLabel: bookmarksTabLabel(
+                TAB_CONFIG[route.name].title,
+                bookmarkCount,
+              ),
+            }
+          : {}),
       })}
     >
       <Tab.Screen

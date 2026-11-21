@@ -55,6 +55,7 @@ export const DETAIL_LABELS = {
   capacity: 'Capacity',
   about: 'About this event',
   bookmark: 'Bookmark',
+  bookmarked: 'Bookmarked',
   register: 'Register',
 };
 

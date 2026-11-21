@@ -4,6 +4,8 @@ import { EmptyState } from '@/components/EmptyState';
 import { ErrorState } from '@/components/ErrorState';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { Tag } from '@/components/Tag';
+import { selectBookmarkById } from '@/features/bookmarks/redux/bookmarksSelectors';
+import { toggleBookmark } from '@/features/bookmarks/redux/bookmarksSlice';
 import { useGetEventByIdQuery } from '@/features/events/api/events.api';
 import {
   CATEGORY_LABELS,
@@ -18,22 +20,27 @@ import {
 } from '@/features/events/utils/formatDate';
 import type { ROUTES } from '@/navigation/routes';
 import type { HomeStackScreenProps } from '@/navigation/types';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { radius, spacing, typography, useColors } from '@/theme';
+import { useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export function EventDetailScreen({
   route,
 }: Readonly<HomeStackScreenProps<typeof ROUTES.EVENT_DETAIL>>) {
   const colors = useColors();
-  const {
-    data: event,
-    isLoading,
-    isError,
-    error,
-    refetch,
-  } = useGetEventByIdQuery(route.params.eventId);
+  const { data, isLoading, isError, error, refetch } = useGetEventByIdQuery(
+    route.params.eventId,
+  );
+  const dispatch = useAppDispatch();
+  const savedEvent = useAppSelector(state =>
+    selectBookmarkById(state, route.params.eventId),
+  );
+  const [offlineCopy] = useState(savedEvent);
+  const event = data ?? offlineCopy;
+  const isBookmarked = savedEvent !== undefined;
 
-  if (isLoading) {
+  if (isLoading && !event) {
     return <LoadingScreen label={EVENT_LOADING_LABEL} testID="event-loading" />;
   }
 
@@ -128,8 +135,12 @@ export function EventDetailScreen({
         <View style={styles.actions}>
           <Button
             testID="bookmark-button"
-            label={DETAIL_LABELS.bookmark}
+            label={
+              isBookmarked ? DETAIL_LABELS.bookmarked : DETAIL_LABELS.bookmark
+            }
             variant="secondary"
+            selected={isBookmarked}
+            onPress={() => dispatch(toggleBookmark(event))}
             style={styles.actionButton}
           />
           <Button

@@ -1,4 +1,5 @@
 import { Tag } from '@/components/Tag';
+import { BookmarkToggle } from '@/features/bookmarks/components/BookmarkToggle';
 import { CATEGORY_LABELS, EVENT_CARD_HINT } from '@/features/events/constants';
 import type { FitEvent } from '@/features/events/types';
 import { formatShortDate } from '@/features/events/utils/formatDate';
@@ -22,42 +23,48 @@ export function EventCard({ event, onPress }: Readonly<EventCardProps>) {
   const date = formatShortDate(event.startsAt);
 
   return (
-    <Pressable
-      testID={`event-card-${event.id}`}
-      accessibilityRole="button"
-      accessibilityLabel={`${event.title}. ${
-        CATEGORY_LABELS[event.category]
-      }, ${date}, ${event.venue}`}
-      accessibilityHint={EVENT_CARD_HINT}
-      onPress={onPress}
-      style={({ pressed }) => [
-        styles.card,
-        {
-          backgroundColor: colors.surface,
-          borderColor: colors.border,
-          shadowColor: colors.shadow,
-        },
-        pressed && styles.pressed,
-      ]}
-    >
-      <Image
-        source={{ uri: event.imageUrl }}
-        accessibilityIgnoresInvertColors
-        style={[styles.image, { backgroundColor: colors.border }]}
-      />
+    <View>
+      <Pressable
+        testID={`event-card-${event.id}`}
+        accessibilityRole="button"
+        accessibilityLabel={`${event.title}. ${
+          CATEGORY_LABELS[event.category]
+        }, ${date}, ${event.venue}`}
+        accessibilityHint={EVENT_CARD_HINT}
+        onPress={onPress}
+        style={({ pressed }) => [
+          styles.card,
+          {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+            shadowColor: colors.shadow,
+          },
+          pressed && styles.pressed,
+        ]}
+      >
+        <Image
+          source={{ uri: event.imageUrl }}
+          accessibilityIgnoresInvertColors
+          style={[styles.image, { backgroundColor: colors.border }]}
+        />
 
-      <View style={styles.body}>
-        <Tag label={CATEGORY_LABELS[event.category]} />
+        <View style={styles.body}>
+          <Tag label={CATEGORY_LABELS[event.category]} />
 
-        <Text numberOfLines={2} style={[styles.title, { color: colors.text }]}>
-          {event.title}
-        </Text>
+          <Text
+            numberOfLines={2}
+            style={[styles.title, { color: colors.text }]}
+          >
+            {event.title}
+          </Text>
 
-        <Text style={[styles.meta, { color: colors.textSecondary }]}>
-          {date} · {event.venue}
-        </Text>
-      </View>
-    </Pressable>
+          <Text style={[styles.meta, { color: colors.textSecondary }]}>
+            {date} · {event.venue}
+          </Text>
+        </View>
+      </Pressable>
+      <BookmarkToggle event={event} style={styles.bookmark} />
+    </View>
   );
 }
 
@@ -91,6 +98,11 @@ const styles = StyleSheet.create({
   },
   meta: {
     ...typography.caption,
+  },
+  bookmark: {
+    position: 'absolute',
+    top: spacing.sm,
+    right: spacing.sm,
   },
   pressed: {
     opacity: 0.7,

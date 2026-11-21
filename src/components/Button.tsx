@@ -11,6 +11,7 @@ type ButtonProps = {
   label: string;
   onPress?: () => void;
   variant?: 'primary' | 'secondary';
+  selected?: boolean;
   style?: StyleProp<ViewStyle>;
   testID?: string;
 };
@@ -19,23 +20,32 @@ export function Button({
   label,
   onPress,
   variant = 'primary',
+  selected = false,
   style,
   testID,
 }: Readonly<ButtonProps>) {
   const colors = useColors();
   const isPrimary = variant === 'primary';
 
+  const getBackgroundColor = () => {
+    if (isPrimary) {
+      return colors.accent;
+    }
+    return selected ? colors.accentSubtle : 'transparent';
+  };
+
   return (
     <Pressable
       testID={testID}
       accessibilityRole="button"
       accessibilityLabel={label}
+      accessibilityState={{ selected }}
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,
         {
           borderColor: colors.accent,
-          backgroundColor: isPrimary ? colors.accent : 'transparent',
+          backgroundColor: getBackgroundColor(),
         },
         style,
         pressed && styles.pressed,

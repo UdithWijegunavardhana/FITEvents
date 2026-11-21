@@ -4,7 +4,7 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-navigation|@react-native-vector-icons|@reduxjs/toolkit|immer|react-redux|redux|redux-thunk|reselect)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-navigation|@react-native-vector-icons|@reduxjs/toolkit|immer|react-redux|redux|redux-thunk|reselect|react-native-mmkv)/)',
   ],
   setupFiles: ['<rootDir>/jest.setup.js'],
 };

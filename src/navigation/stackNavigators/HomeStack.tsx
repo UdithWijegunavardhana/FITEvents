@@ -21,6 +21,7 @@ export function HomeStack() {
       <Stack.Screen
         name={ROUTES.EVENT_DETAIL}
         component={EventDetailScreen}
+        getId={({ params }) => params.eventId}
         options={{ title: EVENT_DETAIL_TITLE }}
       />
     </Stack.Navigator>
