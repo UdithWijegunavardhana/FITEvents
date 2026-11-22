@@ -2,6 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import type { SagaIterator } from 'redux-saga';
 import type { SerializedError } from '@reduxjs/toolkit';
 import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import { API_ERRORS } from '@/api/constants';
 import { getErrorMessage } from '@/api/errors';
 import { authApi } from '@/features/auth/api/auth.api';
 import {
@@ -11,7 +12,7 @@ import {
   logout,
 } from '@/features/auth/redux/authSlice';
 import { authSagaActions } from '@/features/auth/saga/authSagaActions';
-import type { AuthSession } from '@/features/auth/types';
+import type { AuthSession, AuthUser } from '@/features/auth/types';
 import {
   clearUser,
   loadUser,
@@ -49,8 +50,8 @@ function* loginSaga(
     });
     yield call(saveUser, session.user);
     yield put(loginSuccess({ token: session.accessToken, user: session.user }));
-  } catch (error) {
-    yield put(loginFailure(getErrorMessage(error as SerializedError)));
+  } catch {
+    yield put(loginFailure(API_ERRORS.generic));
   }
 }
 
@@ -61,18 +62,26 @@ function* restoreSessionSaga(): SagaIterator {
       yield put(logout());
       return;
     }
-    yield put(
-      loginSuccess({ token: tokens.accessToken, user: loadUser() ?? null }),
-    );
+    const user: AuthUser | undefined = yield call(loadUser);
+    yield put(loginSuccess({ token: tokens.accessToken, user: user ?? null }));
   } catch {
     yield put(logout());
   }
 }
 
-function* logoutSaga(): SagaIterator {
+function* clearSessionStorage(): SagaIterator {
   try {
     yield call(clearTokens);
+  } finally {
     yield call(clearUser);
+  }
+}
+
+function* logoutSaga(): SagaIterator {
+  try {
+    yield call(clearSessionStorage);
+  } catch {
+    return;
   } finally {
     yield put(logout());
   }

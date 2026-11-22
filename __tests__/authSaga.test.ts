@@ -104,3 +104,43 @@ test('restoreSession signs in from stored tokens and clears when none', async ()
   await flushSaga();
   expect(store.getState().auth.token).toBeNull();
 });
+
+test('a keychain failure during logout still signs out and keeps sagas running', async () => {
+  mockLoginResponse(200, fixtureSignInResponse);
+  store.dispatch(
+    authSagaActions.login({ username: 'emilys', password: 'emilyspass' }),
+  );
+  await flushSaga();
+  jest
+    .mocked(Keychain.resetGenericPassword)
+    .mockRejectedValueOnce(new Error('keychain unavailable'));
+
+  store.dispatch(authSagaActions.logout());
+  await flushSaga();
+
+  expect(store.getState().auth.token).toBeNull();
+  expect(storage.getString(StorageKeys.USER)).toBeUndefined();
+
+  store.dispatch(
+    authSagaActions.login({ username: 'emilys', password: 'emilyspass' }),
+  );
+  await flushSaga();
+  expect(store.getState().auth.token).toBe('access-token');
+});
+
+test('a keychain failure during login shows a generic error', async () => {
+  mockLoginResponse(200, fixtureSignInResponse);
+  jest
+    .mocked(Keychain.setGenericPassword)
+    .mockRejectedValueOnce(new Error('keychain unavailable'));
+
+  store.dispatch(
+    authSagaActions.login({ username: 'emilys', password: 'emilyspass' }),
+  );
+  await flushSaga();
+
+  expect(store.getState().auth.token).toBeNull();
+  expect(store.getState().auth.error).toBe(
+    'Something went wrong. Please try again.',
+  );
+});
