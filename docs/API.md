@@ -20,13 +20,14 @@ The base URL comes from `API_BASE_URL` in `.env.*` (S4). Until then it is hardco
 | GET | `/events` | Query: `category`, `q` (full-text), `_sort=startsAt`, `_order=asc`, `_page`, `_limit`. Returns `FitEvent[]`; total in `X-Total-Count` header. |
 | GET | `/events/:id` | `FitEvent` |
 
-### Auth (custom route in `server.js`)
+### Auth (DummyJSON, not the mock server)
+Auth is served by `https://dummyjson.com` (`AUTH_BASE_URL` in `src/api/config.ts`). The mock server's `/auth/*` routes are unused.
+
 | Method | Path | Body | Response |
 |---|---|---|---|
-| POST | `/auth/login` | `{ email, password }` | `200 { token, user }` · `401 { message }` |
-| GET | `/auth/me` | — (Bearer token) | `User` |
+| POST | `/auth/login` | `{ username, password }` | `200 { accessToken, refreshToken, id, username, email, firstName, lastName, gender, image }` · `400 { message }` |
 
-Seed user: `student@fit.uom.lk` / `password123`. Tokens are fake (`fake-jwt-<userId>`); the server only checks the prefix.
+Demo account: `emilys` / `emilyspass`. The access token is sent as `Authorization: Bearer <token>` by the RTK Query base API once signed in.
 
 ### Registrations (Bearer token required)
 | Method | Path | Notes |

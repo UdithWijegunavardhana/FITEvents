@@ -6,6 +6,13 @@ export const baseApi = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_BASE_URL,
     timeout: API_TIMEOUT_MS,
+    prepareHeaders: (headers, { getState }) => {
+      const { auth } = getState() as { auth: { token: string | null } };
+      if (auth.token) {
+        headers.set('Authorization', `Bearer ${auth.token}`);
+      }
+      return headers;
+    },
   }),
   endpoints: () => ({}),
 });

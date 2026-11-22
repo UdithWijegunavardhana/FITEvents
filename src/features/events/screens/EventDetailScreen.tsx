@@ -5,7 +5,7 @@ import { ErrorState } from '@/components/ErrorState';
 import { LoadingScreen } from '@/components/LoadingScreen';
 import { Tag } from '@/components/Tag';
 import { selectBookmarkById } from '@/features/bookmarks/redux/bookmarksSelectors';
-import { toggleBookmark } from '@/features/bookmarks/redux/bookmarksSlice';
+import { bookmarksSagaActions } from '@/features/bookmarks/saga/bookmarksSagaActions';
 import { useGetEventByIdQuery } from '@/features/events/api/events.api';
 import {
   CATEGORY_LABELS,
@@ -140,7 +140,7 @@ export function EventDetailScreen({
             }
             variant="secondary"
             selected={isBookmarked}
-            onPress={() => dispatch(toggleBookmark(event))}
+            onPress={() => dispatch(bookmarksSagaActions.toggle(event))}
             style={styles.actionButton}
           />
           <Button
