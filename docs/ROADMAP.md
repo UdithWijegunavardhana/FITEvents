@@ -35,7 +35,7 @@ Checkpoints:
 1. `mock-server/` with json-server + `db.json` (≥ 20 events), `yarn mock`.
 2. Redux store; RTK Query `eventsApi` (`getEvents`, `getEventById`) replacing mock data.
 3. Loading / error-with-retry / empty states; pull-to-refresh.
-4. `bookmarks` slice; persist to MMKV (listener middleware); Bookmarks tab works offline.
+4. `bookmarks` slice; persist to MMKV (Redux-Saga); Bookmarks tab works offline.
 5. Small `ThemeContext` (light/dark toggle) to contrast Context vs Redux.
 - Branch `s3-saga-demo`: the same "load events" flow implemented with Redux-Saga for comparison. Not merged.
 - Tag: `s3-end`

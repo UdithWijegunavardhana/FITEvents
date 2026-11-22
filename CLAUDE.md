@@ -8,7 +8,7 @@ Read before working: `docs/PROJECT_BRIEF.md` (what the app is), `docs/ROADMAP.md
 
 - React Native **0.87.1**, TypeScript, New Architecture (only option), Hermes
 - Navigation: React Navigation 7 (native-stack + bottom-tabs)
-- State: Redux Toolkit + RTK Query (server state); one Redux-Saga flow on a demo branch
+- State: Redux Toolkit + RTK Query (server state) · Redux-Saga for bookmarks persistence; a second saga flow on the s3-saga-demo branch
 - Storage: react-native-mmkv (app data) · react-native-keychain (tokens)
 - Env: react-native-config with Android flavors / iOS schemes (`dev`, `staging`, `prod`)
 - Testing: Jest + React Native Testing Library · Maestro for E2E
@@ -22,11 +22,11 @@ Before adding **any** dependency: confirm on npm/GitHub that the current stable 
 src/
   app/            App.tsx and root providers
   api/            RTK Query base API and config (baseApi.ts, config.ts)
-  redux/          store.ts, rootReducer.ts, hooks.ts, listener middleware
+  redux/          store.ts, rootReducer.ts, rootSaga.ts, hooks.ts
   contexts/       React contexts (ThemeContext)
   navigation/     AppNavigator, BottomTabNavigator, stackNavigators/, routes.ts, types.ts
   features/
-    <feature>/    api/ redux/ screens/ components/ utils/ constants.ts types.ts
+    <feature>/    api/ redux/ saga/ screens/ components/ utils/ constants.ts types.ts
   components/     shared UI (atoms/molecules)
   services/       secure storage, notifications (added in S4)
   theme/          colors, spacing, typography
@@ -35,7 +35,7 @@ mock-server/      db.json, routes, seed script
 e2e/              Maestro flows
 ```
 
-Features: `events` (list and detail), `bookmarks`, `auth`, `profile`, `checkIn`. Layout follows the TechCart reference app: per feature `api/` (endpoints), `redux/` (slice, selectors, listeners), `screens/`, `components/`.
+Features: `events` (list and detail), `bookmarks`, `auth`, `profile`, `checkIn`. Layout follows the TechCart reference app: per feature `api/` (endpoints), `redux/` (slice, selectors), `saga/` (`*SagaActions.ts`, `*Saga.ts`), `screens/`, `components/`. Events use RTK Query; bookmarks persistence uses a saga.
 
 ## Coding rules (teaching code)
 

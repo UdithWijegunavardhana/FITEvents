@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import { BOOKMARK_LABELS } from '@/features/bookmarks/constants';
 import { selectIsBookmarked } from '@/features/bookmarks/redux/bookmarksSelectors';
-import { toggleBookmark } from '@/features/bookmarks/redux/bookmarksSlice';
+import { bookmarksSagaActions } from '@/features/bookmarks/saga/bookmarksSagaActions';
 import type { FitEvent } from '@/features/events/types';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { minTouchTarget, radius, useColors } from '@/theme';
@@ -37,7 +37,7 @@ export function BookmarkToggle({
           : BOOKMARK_LABELS.add(event.title)
       }
       accessibilityState={{ selected: isBookmarked }}
-      onPress={() => dispatch(toggleBookmark(event))}
+      onPress={() => dispatch(bookmarksSagaActions.toggle(event))}
       style={({ pressed }) => [
         styles.button,
         { backgroundColor: colors.surface, borderColor: colors.border },
