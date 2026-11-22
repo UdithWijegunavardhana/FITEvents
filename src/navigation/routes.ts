@@ -4,4 +4,5 @@ export const ROUTES = {
   PROFILE: 'Profile',
   HOME: 'Home',
   EVENT_DETAIL: 'EventDetail',
+  SIGN_IN: 'SignIn',
 } as const;

@@ -12,6 +12,7 @@ type ButtonProps = {
   onPress?: () => void;
   variant?: 'primary' | 'secondary';
   selected?: boolean;
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   testID?: string;
 };
@@ -21,6 +22,7 @@ export function Button({
   onPress,
   variant = 'primary',
   selected = false,
+  disabled = false,
   style,
   testID,
 }: Readonly<ButtonProps>) {
@@ -39,7 +41,8 @@ export function Button({
       testID={testID}
       accessibilityRole="button"
       accessibilityLabel={label}
-      accessibilityState={{ selected }}
+      accessibilityState={{ selected, disabled }}
+      disabled={disabled}
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,
@@ -48,7 +51,7 @@ export function Button({
           backgroundColor: getBackgroundColor(),
         },
         style,
-        pressed && styles.pressed,
+        (pressed || disabled) && styles.pressed,
       ]}
     >
       <Text

@@ -35,7 +35,7 @@ Checkpoints:
 1. `mock-server/` with json-server + `db.json` (≥ 20 events), `yarn mock`.
 2. Redux store; RTK Query `eventsApi` (`getEvents`, `getEventById`) replacing mock data.
 3. Loading / error-with-retry / empty states; pull-to-refresh.
-4. `bookmarks` slice; persist to MMKV (listener middleware); Bookmarks tab works offline.
+4. `bookmarks` slice; persist to MMKV (Redux-Saga); Bookmarks tab works offline.
 5. Small `ThemeContext` (light/dark toggle) to contrast Context vs Redux.
 - Branch `s3-saga-demo`: the same "load events" flow implemented with Redux-Saga for comparison. Not merged.
 - Tag: `s3-end`
@@ -43,7 +43,7 @@ Checkpoints:
 ## S4 — Native, device, environments, security
 Checkpoints:
 1. Environments: react-native-config, `.env.dev|staging|prod` (+ `.env.example`), Android flavors, iOS schemes; app name/ID suffix per env.
-2. Auth: sign in against the mock server (`/auth/login`), token in Keychain, protected actions, logout.
+2. Auth: done early on branch `s4`. DummyJSON sign in (`emilys` / `emilyspass`), RTK Query login mutation driven by a Redux-Saga flow, AuthStack, tokens in Keychain, logout. Still to do: protected actions.
 3. Register for an event (`POST /registrations`), My Registrations on Profile.
 4. QR check-in screen (camera permission flow, scan, `PATCH /registrations/:id`).
 5. Local notification reminder 30 min before a registered event.

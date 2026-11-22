@@ -91,18 +91,22 @@ iOS simulators reach it at `localhost` directly. See [docs/API.md](docs/API.md) 
 
 Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-commit hook also auto-formats staged files and blocks the commit on type errors.
 
+## Sign in (demo account)
+
+Auth uses [DummyJSON](https://dummyjson.com/docs/auth), so it needs internet and no local server. Sign in with `emilys` / `emilyspass`. Tokens are stored in the Keychain (iOS) or Keystore-backed storage (Android); the user profile is stored in MMKV.
+
 ## Project layout
 
 ```
 src/
   app/          App.tsx and root providers
   api/          RTK Query base API and config
-  redux/        store, root reducer, typed hooks
-  contexts/     React contexts (theme)
-  navigation/   AppNavigator, tabs, stacks, typed params
-  features/     one folder per feature: api/ redux/ screens/ components/
+  redux/        store, root reducer, root saga, typed hooks
+  contexts/     React contexts (theme, auth)
+  navigation/   AppNavigator, tabs, stacks (home, auth), typed params
+  features/     one folder per feature: api/ redux/ saga/ screens/ components/
   components/   shared UI
-  services/     secure storage, notifications (S4)
+  services/     secure storage (Keychain)
   theme/        colours (light/dark), spacing, typography, radius
   utils/        storage (MMKV) and helpers
 ```

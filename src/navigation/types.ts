@@ -6,6 +6,10 @@ import type {
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { ROUTES } from '@/navigation/routes';
 
+export type AuthStackParamList = {
+  [ROUTES.SIGN_IN]: undefined;
+};
+
 export type HomeStackParamList = {
   [ROUTES.HOME]: undefined;
   [ROUTES.EVENT_DETAIL]: { eventId: string };
