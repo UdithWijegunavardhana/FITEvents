@@ -59,7 +59,7 @@ Features: `events` (list and detail), `bookmarks`, `auth`, `profile`, `checkIn`.
 
 Yarn 4 (via Corepack, `nodeLinker: node-modules`), Node 22 (`.nvmrc`). `.yarnrc.yml` sets a 14-day `npmMinimalAgeGate`, so installs only pick versions at least 14 days old.
 
-- `yarn start` · `yarn android` · `yarn ios` (`yarn android:dev` / `yarn ios:dev` added in S4 with flavors)
+- `yarn start` · `yarn android` · `yarn ios` (both run the dev env) · `yarn android:<env>` / `yarn ios:<env>` for `dev`, `staging`, `prod` (needs `.env.<env>`, copy `.env.example`)
 - `yarn lint` · `yarn typecheck` · `yarn test`
 - `yarn mock` (json-server on port 3001) · `yarn mock:seed` (regenerate `mock-server/db.json`) · `yarn mock:qr <eventId>` (check-in QR PNG) · `yarn e2e` (Maestro; added in S5)
 - iOS native deps (macOS, after adding any native module): `cd ios && bundle exec pod install`

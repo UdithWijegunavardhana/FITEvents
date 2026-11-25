@@ -59,10 +59,11 @@ Stack: React Native 0.87 (bare CLI, TypeScript, New Architecture, Hermes), Yarn 
 git clone <repo-url> FITEvents
 cd FITEvents
 yarn install          # also sets up the git pre-commit hook
+cp .env.example .env.dev   # from S4; see "Environments" below
 
 yarn start            # Metro bundler; keep this terminal open
-yarn android          # second terminal: build + launch on the emulator
-yarn ios              # macOS only
+yarn android          # second terminal: build + launch on the emulator (dev)
+yarn ios              # macOS only (dev)
 ```
 
 The first Android build takes several minutes. Later builds are much faster.
@@ -77,6 +78,23 @@ adb reverse tcp:3001 tcp:3001   # Android emulator only, once per emulator start
 ```
 
 iOS simulators reach it at `localhost` directly. See [docs/API.md](docs/API.md) for the endpoints, and for `?_delay=` and `?_fail=1`, which help demo loading and error states.
+
+### Environments (from S4)
+
+There are three environments: `dev`, `staging` and `prod`. Each reads its settings from its own env file through [react-native-config](https://github.com/react-native-config/react-native-config):
+
+| Env | Env file | App name | Bundle / application ID | Android | iOS |
+|---|---|---|---|---|---|
+| dev | `.env.dev` | FIT Events Dev | `com.fitevents.dev` | `yarn android:dev` | `yarn ios:dev` |
+| staging | `.env.staging` | FIT Events Staging | `com.fitevents.staging` | `yarn android:staging` | `yarn ios:staging` |
+| prod | `.env.prod` | FIT Events | `com.fitevents` | `yarn android:prod` | `yarn ios:prod` |
+
+- Only `.env.example` is committed. Copy it to the env files you need and fill in the values.
+- `yarn android` and `yarn ios` run the dev environment.
+- Each environment installs as a separate app, so all three can sit on one device side by side.
+- Env values are compiled into the native build. After you change an env file, rebuild the app; reloading Metro is not enough.
+- Android uses the `dev`, `staging` and `prod` product flavors.
+- iOS uses the `FITEvents-Dev`, `FITEvents-Staging` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
 
 ## Everyday commands
 
