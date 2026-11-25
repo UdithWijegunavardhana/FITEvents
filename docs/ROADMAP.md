@@ -51,7 +51,7 @@ Checkpoints:
 5. Local reminder (react-native-notify-kit): a bookmarked event can schedule a notification 30 min before it starts (inexact alarm on Android). Tapping it opens the event through the deep link handling. Removing the bookmark cancels the reminder.
 6. patch-package demo: one documented patch in `patches/` (react-native-permissions → `BaseReactPackage`), applied by `postinstall`.
 - Dropped from the original plan: registrations (`POST /registrations`, My Registrations) and check-in against a registration.
-- Lab: a Share button on Event Detail that shares `fitevents://event/<id>`, including an unknown event id. Solution on branch `s4-lab-solution`.
+- Lab: a Share button on Event Detail that shares `fitevents://event/<id>`, including an unknown event id.
 - Tag: `s4-end`
 
 ## S5 — Quality: testing, performance, memory
