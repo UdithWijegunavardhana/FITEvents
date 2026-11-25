@@ -105,6 +105,8 @@ xcrun simctl openurl booted fitevents://event/evt-001                           
 adb shell am start -W -a android.intent.action.VIEW -d fitevents://event/evt-001 com.fitevents.dev   # Android (dev)
 ```
 
+The **Scan** tab reads QR codes with the camera and opens `fitevents://event/<id>` links the same way. Print one with `yarn mock:qr evt-001`. The iOS simulator has no camera, so test scanning on a real device.
+
 All three environments register the same `fitevents` scheme. If more than one is installed, the OS picks which app opens the link.
 
 ## Everyday commands
@@ -116,7 +118,7 @@ All three environments register the same `fitevents` scheme. If more than one is
 | `yarn test` | Jest |
 | `yarn mock` | Mock API on port 3001 |
 | `yarn mock:seed` | Regenerate `mock-server/db.json` |
-| `yarn mock:qr <eventId>` | QR code PNG for check-in (`mock-server/qr/`) |
+| `yarn mock:qr <eventId>` | QR code PNG with `fitevents://event/<id>` for the Scan tab (`mock-server/qr/`) |
 
 Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-commit hook also auto-formats staged files and blocks the commit on type errors.
 

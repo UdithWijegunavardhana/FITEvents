@@ -1,6 +1,7 @@
 import { Ionicons } from '@react-native-vector-icons/ionicons/static';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BookmarksScreen } from '@/features/bookmarks/screens/BookmarksScreen';
+import { ScanScreen } from '@/features/checkIn/screens/ScanScreen';
 import { ProfileScreen } from '@/features/profile/screens/ProfileScreen';
 import { selectBookmarkCount } from '@/features/bookmarks/redux/bookmarksSelectors';
 import {
@@ -29,6 +30,7 @@ const createTabBarIcon = (routeName: keyof RootTabParamList) => {
 const tabBarIcons = {
   [ROUTES.HOME_TAB]: createTabBarIcon(ROUTES.HOME_TAB),
   [ROUTES.BOOKMARKS]: createTabBarIcon(ROUTES.BOOKMARKS),
+  [ROUTES.SCAN]: createTabBarIcon(ROUTES.SCAN),
   [ROUTES.PROFILE]: createTabBarIcon(ROUTES.PROFILE),
 };
 
@@ -69,6 +71,7 @@ export function BottomTabNavigator() {
         options={{ headerShown: false }}
       />
       <Tab.Screen name={ROUTES.BOOKMARKS} component={BookmarksScreen} />
+      <Tab.Screen name={ROUTES.SCAN} component={ScanScreen} />
       <Tab.Screen name={ROUTES.PROFILE} component={ProfileScreen} />
     </Tab.Navigator>
   );

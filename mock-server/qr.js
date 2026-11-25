@@ -19,7 +19,7 @@ if (!event) {
   process.exit(1);
 }
 
-const payload = `fitevents://check-in?eventId=${event.id}&code=${event.checkInCode}`;
+const payload = `fitevents://event/${event.id}`;
 const outputDir = path.join(__dirname, 'qr');
 const outputFile = path.join(outputDir, `${event.id}.png`);
 

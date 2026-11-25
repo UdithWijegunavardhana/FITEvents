@@ -24,6 +24,11 @@ export const TAB_CONFIG: Record<keyof RootTabParamList, TabConfig> = {
     testID: 'tab-bookmarks',
     icon: { active: 'bookmark', inactive: 'bookmark-outline' },
   },
+  [ROUTES.SCAN]: {
+    title: 'Scan',
+    testID: 'tab-scan',
+    icon: { active: 'qr-code', inactive: 'qr-code-outline' },
+  },
   [ROUTES.PROFILE]: {
     title: 'Profile',
     testID: 'tab-profile',

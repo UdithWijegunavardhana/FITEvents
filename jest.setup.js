@@ -20,3 +20,11 @@ jest.mock('react-native-config', () => ({
     AUTH_BASE_URL: 'https://dummyjson.com',
   },
 }));
+
+jest.mock('react-native-permissions', () =>
+  require('react-native-permissions/mock'),
+);
+
+jest.mock('react-native-camera-kit', () => ({
+  Camera: 'Camera',
+}));
