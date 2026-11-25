@@ -96,6 +96,17 @@ There are three environments: `dev`, `staging` and `prod`. Each reads its settin
 - Android uses the `dev`, `staging` and `prod` product flavors.
 - iOS uses the `FITEvents-Dev`, `FITEvents-Staging` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
 
+### Deep links (from S4)
+
+`fitevents://event/<id>` opens Event Detail. If you are signed out, the app keeps the link and opens it after you sign in. To try it:
+
+```sh
+xcrun simctl openurl booted fitevents://event/evt-001                                          # iOS simulator
+adb shell am start -W -a android.intent.action.VIEW -d fitevents://event/evt-001 com.fitevents.dev   # Android (dev)
+```
+
+All three environments register the same `fitevents` scheme. If more than one is installed, the OS picks which app opens the link.
+
 ## Everyday commands
 
 | Command | What it does |
