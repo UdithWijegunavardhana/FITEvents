@@ -59,10 +59,11 @@ Stack: React Native 0.87 (bare CLI, TypeScript, New Architecture, Hermes), Yarn 
 git clone <repo-url> FITEvents
 cd FITEvents
 yarn install          # also sets up the git pre-commit hook
+cp .env.example .env.dev   # from S4; see "Environments" below
 
 yarn start            # Metro bundler; keep this terminal open
-yarn android          # second terminal: build + launch on the emulator
-yarn ios              # macOS only
+yarn android          # second terminal: build + launch on the emulator (dev)
+yarn ios              # macOS only (dev)
 ```
 
 The first Android build takes several minutes. Later builds are much faster.
@@ -78,6 +79,44 @@ adb reverse tcp:3001 tcp:3001   # Android emulator only, once per emulator start
 
 iOS simulators reach it at `localhost` directly. See [docs/API.md](docs/API.md) for the endpoints, and for `?_delay=` and `?_fail=1`, which help demo loading and error states.
 
+### Environments (from S4)
+
+There are three environments: `dev`, `staging` and `prod`. Each reads its settings from its own env file through [react-native-config](https://github.com/react-native-config/react-native-config):
+
+| Env | Env file | App name | Bundle / application ID | Android | iOS |
+|---|---|---|---|---|---|
+| dev | `.env.dev` | FIT Events Dev | `com.fitevents.dev` | `yarn android:dev` | `yarn ios:dev` |
+| staging | `.env.staging` | FIT Events Staging | `com.fitevents.staging` | `yarn android:staging` | `yarn ios:staging` |
+| prod | `.env.prod` | FIT Events | `com.fitevents` | `yarn android:prod` | `yarn ios:prod` |
+
+- Only `.env.example` is committed. Copy it to the env files you need and fill in the values.
+- `yarn android` and `yarn ios` run the dev environment.
+- Each environment installs as a separate app, so all three can sit on one device side by side.
+- Env values are compiled into the native build. After you change an env file, rebuild the app; reloading Metro is not enough.
+- Android uses the `dev`, `staging` and `prod` product flavors.
+- iOS uses the `FITEvents-Dev`, `FITEvents-Staging` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
+
+### Deep links (from S4)
+
+`fitevents://event/<id>` opens Event Detail. If you are signed out, the app keeps the link and opens it after you sign in. To try it:
+
+```sh
+xcrun simctl openurl booted fitevents://event/evt-001                                          # iOS simulator
+adb shell am start -W -a android.intent.action.VIEW -d fitevents://event/evt-001 com.fitevents.dev   # Android (dev)
+```
+
+The **Scan** tab reads QR codes with the camera and opens `fitevents://event/<id>` links the same way. Print one with `yarn mock:qr evt-001`. The iOS simulator has no camera, so test scanning on a real device.
+
+All three environments register the same `fitevents` scheme. If more than one is installed, the OS picks which app opens the link.
+
+### Event reminders (from S4)
+
+On Event Detail, a bookmarked event has a **Remind me 30 min before** button. It schedules a local notification with [react-native-notify-kit](https://github.com/marcocrupi/react-native-notify-kit), and tapping the notification opens the event through the `fitevents://event/<id>` deep link. Removing the bookmark cancels the reminder.
+
+- **Not exact:** on Android the reminder uses an inexact alarm, so it can arrive a few minutes late. The app does not request the exact-alarm permission.
+- **Push notifications** are out of scope.
+- **Quick test:** an event must start more than 30 minutes from now. To see a reminder within a minute, change an event's `startsAt` on the running mock server (`PATCH /events/<id>`). Restart `yarn mock` to reset it.
+
 ## Everyday commands
 
 | Command | What it does |
@@ -87,7 +126,8 @@ iOS simulators reach it at `localhost` directly. See [docs/API.md](docs/API.md) 
 | `yarn test` | Jest |
 | `yarn mock` | Mock API on port 3001 |
 | `yarn mock:seed` | Regenerate `mock-server/db.json` |
-| `yarn mock:qr <eventId>` | QR code PNG for check-in (`mock-server/qr/`) |
+| `yarn postinstall` | Re-apply dependency patches from `patches/` (see [patches/README.md](patches/README.md)) |
+| `yarn mock:qr <eventId>` | QR code PNG with `fitevents://event/<id>` for the Scan tab (`mock-server/qr/`) |
 
 Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-commit hook also auto-formats staged files and blocks the commit on type errors.
 

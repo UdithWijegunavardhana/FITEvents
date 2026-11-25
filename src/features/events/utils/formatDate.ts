@@ -20,14 +20,17 @@ export function formatLongDate(iso: string): string {
   });
 }
 
+const TIME_OPTIONS: Intl.DateTimeFormatOptions = {
+  hour: 'numeric',
+  minute: '2-digit',
+  hour12: true,
+  timeZone: TIME_ZONE,
+};
+
+export function formatTime(iso: string): string {
+  return new Date(iso).toLocaleTimeString(LOCALE, TIME_OPTIONS);
+}
+
 export function formatTimeRange(startIso: string, endIso: string): string {
-  const options: Intl.DateTimeFormatOptions = {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-    timeZone: TIME_ZONE,
-  };
-  const start = new Date(startIso).toLocaleTimeString(LOCALE, options);
-  const end = new Date(endIso).toLocaleTimeString(LOCALE, options);
-  return `${start} – ${end}`;
+  return `${formatTime(startIso)} – ${formatTime(endIso)}`;
 }

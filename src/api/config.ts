@@ -1,6 +1,15 @@
-// TODO(S4): replace with API_BASE_URL from .env.dev|staging|prod (react-native-config).
-export const API_BASE_URL = 'http://localhost:3001';
+import Config from 'react-native-config';
 
-export const AUTH_BASE_URL = 'https://dummyjson.com';
+function readEnv(name: 'API_BASE_URL' | 'AUTH_BASE_URL'): string {
+  const value = Config[name];
+  if (!value) {
+    throw new Error(`${name} is missing. Check the .env file for this build.`);
+  }
+  return value;
+}
+
+export const API_BASE_URL = readEnv('API_BASE_URL');
+
+export const AUTH_BASE_URL = readEnv('AUTH_BASE_URL');
 
 export const API_TIMEOUT_MS = 10000;

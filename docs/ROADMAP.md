@@ -41,14 +41,17 @@ Checkpoints:
 - Tag: `s3-end`
 
 ## S4 — Native, device, environments, security
+Built on branch `s4-native` (auth was done earlier, on branch `s4`).
+
 Checkpoints:
-1. Environments: react-native-config, `.env.dev|staging|prod` (+ `.env.example`), Android flavors, iOS schemes; app name/ID suffix per env.
-2. Auth: done early on branch `s4`. DummyJSON sign in (`emilys` / `emilyspass`), RTK Query login mutation driven by a Redux-Saga flow, AuthStack, tokens in Keychain, logout. Still to do: protected actions.
-3. Register for an event (`POST /registrations`), My Registrations on Profile.
-4. QR check-in screen (camera permission flow, scan, `PATCH /registrations/:id`).
-5. Local notification reminder 30 min before a registered event.
-6. Deep link `fitevents://event/<id>` opens Event Detail.
-7. patch-package demo: one documented patch in `patches/`.
+1. Environments: react-native-config, `.env.dev|staging|prod` (+ `.env.example`), Android flavors `dev|staging|prod`, iOS schemes `FITEvents-Dev|Staging|Prod`. App name and ID suffix per env. `yarn android:<env>` / `yarn ios:<env>`.
+2. Auth (done earlier, on branch `s4`): DummyJSON sign in (`emilys` / `emilyspass`), RTK Query login mutation driven by a Redux-Saga flow, AuthStack, tokens in Keychain, logout.
+3. Deep link `fitevents://event/<id>` opens Event Detail through React Navigation `linking`, from cold start and while running. When signed out, the link is kept and opened after login.
+4. QR scanner tab (react-native-camera-kit + react-native-permissions): granted / denied / blocked → open Settings. Scanned `fitevents://event/<id>` links reuse the deep link config (`useLinkTo`). `yarn mock:qr <eventId>` prints the QR code.
+5. Local reminder (react-native-notify-kit): a bookmarked event can schedule a notification 30 min before it starts (inexact alarm on Android). Tapping it opens the event through the deep link handling. Removing the bookmark cancels the reminder.
+6. patch-package demo: one documented patch in `patches/` (react-native-permissions → `BaseReactPackage`), applied by `postinstall`.
+- Dropped from the original plan: registrations (`POST /registrations`, My Registrations) and check-in against a registration.
+- Lab: a Share button on Event Detail that shares `fitevents://event/<id>`, including an unknown event id.
 - Tag: `s4-end`
 
 ## S5 — Quality: testing, performance, memory

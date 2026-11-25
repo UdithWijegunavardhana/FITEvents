@@ -1,12 +1,28 @@
-# Resolve react_native_pods.rb with node to allow for hoisting
-require Pod::Executable.execute_command('node', ['-p',
-  'require.resolve(
-    "react-native/scripts/react_native_pods.rb",
-    {paths: [process.argv[1]]},
-  )', __dir__]).strip
+def node_require(script)
+  require Pod::Executable.execute_command('node', ['-p',
+    "require.resolve(
+      '#{script}',
+      {paths: [process.argv[1]]},
+    )", __dir__]).strip
+end
+
+node_require('react-native/scripts/react_native_pods.rb')
+node_require('react-native-permissions/scripts/setup.rb')
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
+
+setup_permissions([
+  'Camera',
+])
+
+project 'FITEvents',
+  'Debug-Dev' => :debug,
+  'Release-Dev' => :release,
+  'Debug-Staging' => :debug,
+  'Release-Staging' => :release,
+  'Debug-Prod' => :debug,
+  'Release-Prod' => :release
 
 linkage = ENV['USE_FRAMEWORKS']
 if linkage != nil
@@ -30,5 +46,14 @@ target 'FITEvents' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    installer.pods_project.targets.each do |target|
+      next unless target.name == 'react-native-config'
+
+      target.build_configurations.each do |build_config|
+        env = build_config.name.split('-').last.downcase
+        build_config.build_settings['ENVFILE'] = ".env.#{env}"
+      end
+    end
   end
 end

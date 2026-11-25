@@ -18,6 +18,7 @@ export type HomeStackParamList = {
 export type RootTabParamList = {
   [ROUTES.HOME_TAB]: NavigatorScreenParams<HomeStackParamList>;
   [ROUTES.BOOKMARKS]: undefined;
+  [ROUTES.SCAN]: undefined;
   [ROUTES.PROFILE]: undefined;
 };
 

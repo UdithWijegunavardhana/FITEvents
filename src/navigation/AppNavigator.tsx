@@ -7,10 +7,12 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { BottomTabNavigator } from '@/navigation/BottomTabNavigator';
 import { getNavigationTheme } from '@/navigation/navigationTheme';
 import { AuthStack } from '@/navigation/stackNavigators/AuthStack';
+import { useDeepLinking } from '@/navigation/useDeepLinking';
 
 export function AppNavigator() {
   const { colors, isDark } = useTheme();
   const { isAuthenticated, restoring, restoreSession } = useAuth();
+  const linking = useDeepLinking(isAuthenticated);
 
   useEffect(() => {
     restoreSession();
@@ -22,7 +24,10 @@ export function AppNavigator() {
       {restoring ? (
         <LoadingScreen />
       ) : (
-        <NavigationContainer theme={getNavigationTheme(colors, isDark)}>
+        <NavigationContainer
+          linking={linking}
+          theme={getNavigationTheme(colors, isDark)}
+        >
           {isAuthenticated ? <BottomTabNavigator /> : <AuthStack />}
         </NavigationContainer>
       )}
