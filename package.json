@@ -15,7 +15,7 @@
     "mock": "node mock-server/server.js",
     "mock:qr": "node mock-server/qr.js",
     "mock:seed": "node mock-server/seed.js",
-    "postinstall": "husky",
+    "postinstall": "husky && patch-package",
     "start": "react-native start",
     "test": "jest",
     "typecheck": "tsc --noEmit"
@@ -62,6 +62,7 @@
     "jest": "29.7.0",
     "json-server": "0.17.4",
     "lint-staged": "16.4.0",
+    "patch-package": "8.0.1",
     "prettier": "2.8.8",
     "qrcode": "1.5.4",
     "react-test-renderer": "19.2.3",

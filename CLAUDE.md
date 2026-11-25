@@ -64,6 +64,8 @@ Yarn 4 (via Corepack, `nodeLinker: node-modules`), Node 22 (`.nvmrc`). `.yarnrc.
 - `yarn mock` (json-server on port 3001) · `yarn mock:seed` (regenerate `mock-server/db.json`) · `yarn mock:qr <eventId>` (event deep-link QR PNG) · `yarn e2e` (Maestro; added in S5)
 - iOS native deps (macOS, after adding any native module): `cd ios && bundle exec pod install`
 
+Dependency patches live in `patches/` (patch-package, applied by `postinstall`); document each one in `patches/README.md`. Yarn 4 skips `postinstall` when dependencies are unchanged, so run `yarn postinstall` after pulling a new patch.
+
 Before every commit: `yarn lint && yarn typecheck && yarn test`. The husky pre-commit hook runs lint-staged (eslint --fix + prettier) and `yarn typecheck`.
 
 The `@/` alias (→ `src/`) is defined in three places that must stay in sync: `babel.config.js`, `tsconfig.json` (`paths`), and `jest.config.js` (`moduleNameMapper`).

@@ -126,6 +126,7 @@ On Event Detail, a bookmarked event has a **Remind me 30 min before** button. It
 | `yarn test` | Jest |
 | `yarn mock` | Mock API on port 3001 |
 | `yarn mock:seed` | Regenerate `mock-server/db.json` |
+| `yarn postinstall` | Re-apply dependency patches from `patches/` (see [patches/README.md](patches/README.md)) |
 | `yarn mock:qr <eventId>` | QR code PNG with `fitevents://event/<id>` for the Scan tab (`mock-server/qr/`) |
 
 Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-commit hook also auto-formats staged files and blocks the commit on type errors.

@@ -1,0 +1,19 @@
+diff --git a/node_modules/react-native-permissions/android/src/main/java/com/zoontek/rnpermissions/RNPermissionsPackage.kt b/node_modules/react-native-permissions/android/src/main/java/com/zoontek/rnpermissions/RNPermissionsPackage.kt
+index 07ebbd2..224fb86 100644
+--- a/node_modules/react-native-permissions/android/src/main/java/com/zoontek/rnpermissions/RNPermissionsPackage.kt
++++ b/node_modules/react-native-permissions/android/src/main/java/com/zoontek/rnpermissions/RNPermissionsPackage.kt
+@@ -1,12 +1,12 @@
+ package com.zoontek.rnpermissions
+ 
+-import com.facebook.react.TurboReactPackage
++import com.facebook.react.BaseReactPackage
+ import com.facebook.react.bridge.NativeModule
+ import com.facebook.react.bridge.ReactApplicationContext
+ import com.facebook.react.module.model.ReactModuleInfo
+ import com.facebook.react.module.model.ReactModuleInfoProvider
+ 
+-class RNPermissionsPackage : TurboReactPackage() {
++class RNPermissionsPackage : BaseReactPackage() {
+   override fun getModule(name: String, reactContext: ReactApplicationContext): NativeModule? {
+     return when (name) {
+       RNPermissionsModuleImpl.NAME -> RNPermissionsModule(reactContext)
