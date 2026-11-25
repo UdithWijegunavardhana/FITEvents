@@ -28,3 +28,7 @@ jest.mock('react-native-permissions', () =>
 jest.mock('react-native-camera-kit', () => ({
   Camera: 'Camera',
 }));
+
+jest.mock('react-native-notify-kit', () =>
+  require('react-native-notify-kit/jest-mock'),
+);

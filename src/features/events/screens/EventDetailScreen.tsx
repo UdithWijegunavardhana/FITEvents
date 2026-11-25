@@ -18,6 +18,7 @@ import {
   formatLongDate,
   formatTimeRange,
 } from '@/features/events/utils/formatDate';
+import { ReminderButton } from '@/features/reminders/components/ReminderButton';
 import type { ROUTES } from '@/navigation/routes';
 import type { HomeStackScreenProps } from '@/navigation/types';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -149,6 +150,7 @@ export function EventDetailScreen({
             style={styles.actionButton}
           />
         </View>
+        {isBookmarked ? <ReminderButton event={event} /> : null}
       </View>
     </ScrollView>
   );

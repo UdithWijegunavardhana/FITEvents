@@ -109,6 +109,14 @@ The **Scan** tab reads QR codes with the camera and opens `fitevents://event/<id
 
 All three environments register the same `fitevents` scheme. If more than one is installed, the OS picks which app opens the link.
 
+### Event reminders (from S4)
+
+On Event Detail, a bookmarked event has a **Remind me 30 min before** button. It schedules a local notification with [react-native-notify-kit](https://github.com/marcocrupi/react-native-notify-kit), and tapping the notification opens the event through the `fitevents://event/<id>` deep link. Removing the bookmark cancels the reminder.
+
+- **Not exact:** on Android the reminder uses an inexact alarm, so it can arrive a few minutes late. The app does not request the exact-alarm permission.
+- **Push notifications** are out of scope.
+- **Quick test:** an event must start more than 30 minutes from now. To see a reminder within a minute, change an event's `startsAt` on the running mock server (`PATCH /events/<id>`). Restart `yarn mock` to reset it.
+
 ## Everyday commands
 
 | Command | What it does |

@@ -3,6 +3,10 @@ import { useEffect, useMemo, useRef } from 'react';
 import { Linking } from 'react-native';
 import { DEEP_LINK_PREFIX, linkingConfig } from '@/navigation/linking';
 import type { RootTabParamList } from '@/navigation/types';
+import {
+  getInitialNotificationUrl,
+  subscribeToNotificationPresses,
+} from '@/services/notifications';
 
 type UrlListener = (url: string) => void;
 
@@ -27,7 +31,9 @@ export function useDeepLinking(
       prefixes: [DEEP_LINK_PREFIX],
       config: linkingConfig,
       async getInitialURL() {
-        const url = await Linking.getInitialURL();
+        const url =
+          (await getInitialNotificationUrl()) ??
+          (await Linking.getInitialURL());
         if (isAuthenticatedRef.current) {
           return url;
         }
@@ -36,16 +42,22 @@ export function useDeepLinking(
       },
       subscribe(listener: UrlListener) {
         listenerRef.current = listener;
-        const subscription = Linking.addEventListener('url', ({ url }) => {
+        const openWhenSignedIn = (url: string) => {
           if (isAuthenticatedRef.current) {
             listener(url);
           } else {
-            pendingUrlRef.current = url ?? null;
+            pendingUrlRef.current = url;
           }
-        });
+        };
+        const linkingSubscription = Linking.addEventListener('url', ({ url }) =>
+          openWhenSignedIn(url),
+        );
+        const unsubscribeNotifications =
+          subscribeToNotificationPresses(openWhenSignedIn);
         return () => {
           listenerRef.current = null;
-          subscription.remove();
+          linkingSubscription.remove();
+          unsubscribeNotifications();
         };
       },
     }),
