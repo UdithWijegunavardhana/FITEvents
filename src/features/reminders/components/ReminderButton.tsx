@@ -11,7 +11,7 @@ type ReminderButtonProps = {
 
 export function ReminderButton({ event }: Readonly<ReminderButtonProps>) {
   const colors = useColors();
-  const { isScheduled, message, busy, toggleReminder } =
+  const { isScheduled, message, busy, toggleReminder, scheduleDemoReminder } =
     useEventReminder(event);
 
   return (
@@ -24,6 +24,15 @@ export function ReminderButton({ event }: Readonly<ReminderButtonProps>) {
         disabled={busy}
         onPress={toggleReminder}
       />
+      {__DEV__ && !isScheduled ? (
+        <Button
+          testID="reminder-demo-button"
+          label={REMINDER_LABELS.demo}
+          variant="secondary"
+          disabled={busy}
+          onPress={scheduleDemoReminder}
+        />
+      ) : null}
       {message ? (
         <Text
           testID="reminder-message"
