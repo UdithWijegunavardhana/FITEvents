@@ -81,20 +81,21 @@ iOS simulators reach it at `localhost` directly. See [docs/API.md](docs/API.md) 
 
 ### Environments (from S4)
 
-There are three environments: `dev`, `staging` and `prod`. Each reads its settings from its own env file through [react-native-config](https://github.com/react-native-config/react-native-config):
+There are four environments: `dev`, `qa`, `uat` and `prod`. Each reads its settings from its own env file through [react-native-config](https://github.com/react-native-config/react-native-config):
 
 | Env | Env file | App name | Bundle / application ID | Android | iOS |
 |---|---|---|---|---|---|
 | dev | `.env.dev` | FIT Events Dev | `com.fitevents.dev` | `yarn android:dev` | `yarn ios:dev` |
-| staging | `.env.staging` | FIT Events Staging | `com.fitevents.staging` | `yarn android:staging` | `yarn ios:staging` |
+| qa | `.env.qa` | FIT Events QA | `com.fitevents.qa` | `yarn android:qa` | `yarn ios:qa` |
+| uat | `.env.uat` | FIT Events UAT | `com.fitevents.uat` | `yarn android:uat` | `yarn ios:uat` |
 | prod | `.env.prod` | FIT Events | `com.fitevents` | `yarn android:prod` | `yarn ios:prod` |
 
 - Only `.env.example` is committed. Copy it to the env files you need and fill in the values.
 - `yarn android` and `yarn ios` run the dev environment.
-- Each environment installs as a separate app, so all three can sit on one device side by side.
+- Each environment installs as a separate app, so all four can sit on one device side by side. Prod has no ID suffix.
 - Env values are compiled into the native build. After you change an env file, rebuild the app; reloading Metro is not enough.
-- Android uses the `dev`, `staging` and `prod` product flavors.
-- iOS uses the `FITEvents-Dev`, `FITEvents-Staging` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
+- Android uses the `dev`, `qa`, `uat` and `prod` product flavors.
+- iOS uses the `FITEvents-Dev`, `FITEvents-QA`, `FITEvents-UAT` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
 
 ### Deep links (from S4)
 

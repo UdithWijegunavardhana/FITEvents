@@ -4,7 +4,8 @@ apply plugin: "com.facebook.react"
 
 project.ext.envConfigFiles = [
     dev: ".env.dev",
-    staging: ".env.staging",
+    qa: ".env.qa",
+    uat: ".env.uat",
     prod: ".env.prod",
 ]
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
@@ -29,7 +30,7 @@ react {
     //   skip the bundling of the JS bundle and the assets. Default is "debug", "debugOptimized".
     //   If you add flavors like lite, prod, etc. you'll have to list your debuggableVariants.
     // debuggableVariants = ["liteDebug", "liteDebugOptimized", "prodDebug", "prodDebugOptimized"]
-    debuggableVariants = ["devDebug", "devDebugOptimized", "stagingDebug", "stagingDebugOptimized", "prodDebug", "prodDebugOptimized"]
+    debuggableVariants = ["devDebug", "devDebugOptimized", "qaDebug", "qaDebugOptimized", "uatDebug", "uatDebugOptimized", "prodDebug", "prodDebugOptimized"]
 
     /* Bundling */
     //   A list containing the node command and its flags. Default is just 'node'.
@@ -103,10 +104,15 @@ android {
             applicationIdSuffix ".dev"
             resValue "string", "app_name", "FIT Events Dev"
         }
-        staging {
+        qa {
             dimension "env"
-            applicationIdSuffix ".staging"
-            resValue "string", "app_name", "FIT Events Staging"
+            applicationIdSuffix ".qa"
+            resValue "string", "app_name", "FIT Events QA"
+        }
+        uat {
+            dimension "env"
+            applicationIdSuffix ".uat"
+            resValue "string", "app_name", "FIT Events UAT"
         }
         prod {
             dimension "env"

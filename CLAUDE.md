@@ -10,7 +10,7 @@ Read before working: `docs/PROJECT_BRIEF.md` (what the app is), `docs/ROADMAP.md
 - Navigation: React Navigation 7 (native-stack + bottom-tabs)
 - State: Redux Toolkit + RTK Query (events, server state) · RTK Query for all HTTP · Redux-Saga for auth and bookmarks orchestration, TechCart-style (`api/ redux/ saga/` per feature)
 - Storage: react-native-mmkv (app data) · react-native-keychain (tokens)
-- Env: react-native-config with Android flavors / iOS schemes (`dev`, `staging`, `prod`)
+- Env: react-native-config with Android flavors / iOS schemes (`dev`, `qa`, `uat`, `prod`)
 - Testing: Jest + React Native Testing Library · Maestro for E2E
 - Mock backend: json-server (`mock-server/`) for events · DummyJSON (`https://dummyjson.com`) for auth
 
@@ -59,7 +59,7 @@ Features: `events` (list and detail), `bookmarks`, `auth`, `profile`, `checkIn` 
 
 Yarn 4 (via Corepack, `nodeLinker: node-modules`), Node 22 (`.nvmrc`). `.yarnrc.yml` sets a 14-day `npmMinimalAgeGate`, so installs only pick versions at least 14 days old.
 
-- `yarn start` · `yarn android` · `yarn ios` (both run the dev env) · `yarn android:<env>` / `yarn ios:<env>` for `dev`, `staging`, `prod` (needs `.env.<env>`, copy `.env.example`)
+- `yarn start` · `yarn android` · `yarn ios` (both run the dev env) · `yarn android:<env>` / `yarn ios:<env>` for `dev`, `qa`, `uat`, `prod` (needs `.env.<env>`, copy `.env.example`)
 - `yarn lint` · `yarn typecheck` · `yarn test`
 - `yarn mock` (json-server on port 3001) · `yarn mock:seed` (regenerate `mock-server/db.json`) · `yarn mock:qr <eventId>` (event deep-link QR PNG) · `yarn e2e` (Maestro; added in S5)
 - iOS native deps (macOS, after adding any native module): `cd ios && bundle exec pod install`

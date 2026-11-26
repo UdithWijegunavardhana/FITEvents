@@ -19,8 +19,10 @@ setup_permissions([
 project 'FITEvents',
   'Debug-Dev' => :debug,
   'Release-Dev' => :release,
-  'Debug-Staging' => :debug,
-  'Release-Staging' => :release,
+  'Debug-QA' => :debug,
+  'Release-QA' => :release,
+  'Debug-UAT' => :debug,
+  'Release-UAT' => :release,
   'Debug-Prod' => :debug,
   'Release-Prod' => :release
 

@@ -44,7 +44,7 @@ Checkpoints:
 Built on branch `s4-native` (auth was done earlier, on branch `s4`).
 
 Checkpoints:
-1. Environments: react-native-config, `.env.dev|staging|prod` (+ `.env.example`), Android flavors `dev|staging|prod`, iOS schemes `FITEvents-Dev|Staging|Prod`. App name and ID suffix per env. `yarn android:<env>` / `yarn ios:<env>`.
+1. Environments: react-native-config, `.env.dev|qa|uat|prod` (+ `.env.example`), Android flavors `dev|qa|uat|prod`, iOS schemes `FITEvents-Dev|QA|UAT|Prod`. App name and ID suffix per env (prod has no suffix). `yarn android:<env>` / `yarn ios:<env>`.
 2. Auth (done earlier, on branch `s4`): DummyJSON sign in (`emilys` / `emilyspass`), RTK Query login mutation driven by a Redux-Saga flow, AuthStack, tokens in Keychain, logout.
 3. Deep link `fitevents://event/<id>` opens Event Detail through React Navigation `linking`, from cold start and while running. When signed out, the link is kept and opened after login.
 4. QR scanner tab (react-native-camera-kit + react-native-permissions): granted / denied / blocked → open Settings. Scanned `fitevents://event/<id>` links reuse the deep link config (`useLinkTo`). `yarn mock:qr <eventId>` prints the QR code.
