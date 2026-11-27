@@ -97,6 +97,21 @@ There are four environments: `dev`, `qa`, `uat` and `prod`. Each reads its setti
 - Android uses the `dev`, `qa`, `uat` and `prod` product flavors.
 - iOS uses the `FITEvents-Dev`, `FITEvents-QA`, `FITEvents-UAT` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
 
+### Android release signing (from S4)
+
+Release builds are signed with a keystore you create yourself. Without one, release builds fall back to the debug key, which is fine for local testing but not for the Play Store.
+
+1. Create a keystore (keep the file and passwords private, and back them up):
+
+   ```sh
+   keytool -genkeypair -v -storetype PKCS12 -keystore android/app/release.keystore -alias fitevents -keyalg RSA -keysize 2048 -validity 10000
+   ```
+
+2. Copy `android/keystore.properties.example` to `android/keystore.properties` and fill in the passwords and alias.
+3. Build a signed release, for example `cd android && ./gradlew assembleProdRelease`.
+
+`android/keystore.properties`, `*.keystore` and `*.jks` are gitignored. Never commit them.
+
 ### Deep links (from S4)
 
 `fitevents://event/<id>` opens Event Detail. If you are signed out, the app keeps the link and opens it after you sign in. To try it:
