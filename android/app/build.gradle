@@ -108,20 +108,24 @@ android {
         dev {
             dimension "env"
             applicationIdSuffix ".dev"
+            manifestPlaceholders = [deepLinkScheme: "fitevents-dev"]
             resValue "string", "app_name", "FIT Events Dev"
         }
         qa {
             dimension "env"
             applicationIdSuffix ".qa"
+            manifestPlaceholders = [deepLinkScheme: "fitevents-qa"]
             resValue "string", "app_name", "FIT Events QA"
         }
         uat {
             dimension "env"
             applicationIdSuffix ".uat"
+            manifestPlaceholders = [deepLinkScheme: "fitevents-uat"]
             resValue "string", "app_name", "FIT Events UAT"
         }
         prod {
             dimension "env"
+            manifestPlaceholders = [deepLinkScheme: "fitevents"]
             resValue "string", "app_name", "FIT Events"
         }
     }

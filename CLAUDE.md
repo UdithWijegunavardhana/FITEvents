@@ -61,7 +61,7 @@ Yarn 4 (via Corepack, `nodeLinker: node-modules`), Node 22 (`.nvmrc`). `.yarnrc.
 
 - `yarn start` · `yarn android` · `yarn ios` (both run the dev env) · `yarn android:<env>` / `yarn ios:<env>` for `dev`, `qa`, `uat`, `prod` (needs `.env.<env>`, copy `.env.example`)
 - `yarn lint` · `yarn typecheck` · `yarn test`
-- `yarn mock` (json-server on port 3001) · `yarn mock:seed` (regenerate `mock-server/db.json`) · `yarn mock:qr <eventId>` (event deep-link QR PNG) · `yarn e2e` (Maestro; added in S5)
+- `yarn mock` (json-server on port 3001) · `yarn mock:seed` (regenerate `mock-server/db.json`) · `yarn mock:qr <eventId> [env]` (event deep-link QR PNG) · `yarn e2e` (Maestro; added in S5)
 - iOS native deps (macOS, after adding any native module): `cd ios && bundle exec pod install`
 
 Dependency patches live in `patches/` (patch-package, applied by `postinstall`); document each one in `patches/README.md`. Yarn 4 skips `postinstall` when dependencies are unchanged, so run `yarn postinstall` after pulling a new patch.

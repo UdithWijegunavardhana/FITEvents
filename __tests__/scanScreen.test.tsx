@@ -83,6 +83,7 @@ test('only accepts fitevents://event/<id> links', () => {
   expect(toEventLinkPath('fitevents://event/')).toBeNull();
   expect(toEventLinkPath('fitevents://event/evt-001/extra')).toBeNull();
   expect(toEventLinkPath('https://example.com/event/evt-001')).toBeNull();
+  expect(toEventLinkPath('fitevents-qa://event/evt-001')).toBeNull();
 });
 
 test('opens Event Detail when a valid event QR code is scanned', async () => {

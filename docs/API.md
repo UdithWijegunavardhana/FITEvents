@@ -36,7 +36,7 @@ Demo account: `emilys` / `emilyspass`. The access token is sent as `Authorizatio
 | POST | `/registrations` | `{ eventId }` → creates `status: 'registered'`, increments `registeredCount`; `409` if full or already registered |
 | PATCH | `/registrations/:id/check-in` | `{ code }` → `status: 'checked_in'`, sets `checkedInAt`; `400` if code wrong |
 
-Each event in `db.json` has a hidden `checkInCode` (stripped from `/events` responses by `server.js`). Print QR codes with `yarn mock:qr <eventId>` (generates a PNG under `mock-server/qr/`). The QR encodes the event deep link `fitevents://event/<id>`; the app's Scan tab opens it like any other deep link. The check-in endpoints and `checkInCode` are not used by the app.
+Each event in `db.json` has a hidden `checkInCode` (stripped from `/events` responses by `server.js`). Print QR codes with `yarn mock:qr <eventId> [env]` (generates a PNG under `mock-server/qr/`, `dev` by default). The QR encodes the event deep link `<scheme>://event/<id>`, where the scheme comes from `.env.<env>`; the app's Scan tab opens it like any other deep link. The check-in endpoints and `checkInCode` are not used by the app.
 
 ## Errors
 All errors: `{ "message": string }` with a suitable status code. `server.js` supports `?_delay=2000` (milliseconds, max 30000) to demo loading states, and `?_fail=1` to force a 500 for error-state demos. Both work on every route.
