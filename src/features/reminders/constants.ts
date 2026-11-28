@@ -1,5 +1,7 @@
 export const REMINDER_LEAD_MINUTES = 30;
 
+export const DEMO_REMINDER_DELAY_SECONDS = 10;
+
 export const REMINDER_CHANNEL = {
   id: 'event-reminders',
   name: 'Event reminders',
@@ -8,6 +10,7 @@ export const REMINDER_CHANNEL = {
 export const REMINDER_LABELS = {
   add: 'Remind me 30 min before',
   remove: 'Cancel reminder',
+  demo: `Demo: remind me in ${DEMO_REMINDER_DELAY_SECONDS} s`,
   addHint: 'Schedules a notification 30 minutes before the event starts',
   removeHint: 'Removes the scheduled notification',
   scheduledFor: (time: string) => `Reminder set for ${time}`,

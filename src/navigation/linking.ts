@@ -1,8 +1,9 @@
 import type { LinkingOptions } from '@react-navigation/native';
+import { DEEP_LINK_SCHEME } from '@/api/config';
 import { ROUTES } from '@/navigation/routes';
 import type { RootTabParamList } from '@/navigation/types';
 
-export const DEEP_LINK_PREFIX = 'fitevents://';
+export const DEEP_LINK_PREFIX = `${DEEP_LINK_SCHEME}://`;
 
 const EVENT_LINK_START = `${DEEP_LINK_PREFIX}event/`;
 

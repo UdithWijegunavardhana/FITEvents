@@ -117,6 +117,25 @@ test('schedules a reminder 30 minutes before a bookmarked event', async () => {
   await ReactTestRenderer.act(async () => renderer?.unmount());
 });
 
+test('schedules a demo reminder 10 seconds from now in dev builds', async () => {
+  const event = eventStartingIn(120);
+  const renderer = await renderBookmarkedEventDetail(event);
+  const pressedAt = Date.now();
+
+  await ReactTestRenderer.act(async () => {
+    findByTestID(renderer, 'reminder-demo-button')?.props.onPress();
+  });
+  await flushPromises();
+
+  const trigger = jest.mocked(notifee.createTriggerNotification).mock
+    .lastCall?.[1] as { timestamp: number } | undefined;
+  expect(trigger?.timestamp).toBeGreaterThanOrEqual(pressedAt + 10 * 1000);
+  expect(trigger?.timestamp).toBeLessThan(pressedAt + 15 * 1000);
+  expect(findByTestID(renderer, 'reminder-demo-button')).toBeUndefined();
+
+  await ReactTestRenderer.act(async () => renderer?.unmount());
+});
+
 test('does not schedule a reminder for an event starting within 30 minutes', async () => {
   const renderer = await renderBookmarkedEventDetail(eventStartingIn(10));
 

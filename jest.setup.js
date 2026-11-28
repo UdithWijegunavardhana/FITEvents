@@ -18,6 +18,7 @@ jest.mock('react-native-config', () => ({
   default: {
     API_BASE_URL: 'http://localhost:3001',
     AUTH_BASE_URL: 'https://dummyjson.com',
+    DEEP_LINK_SCHEME: 'fitevents',
   },
 }));
 

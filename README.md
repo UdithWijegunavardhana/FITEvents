@@ -81,33 +81,49 @@ iOS simulators reach it at `localhost` directly. See [docs/API.md](docs/API.md) 
 
 ### Environments (from S4)
 
-There are three environments: `dev`, `staging` and `prod`. Each reads its settings from its own env file through [react-native-config](https://github.com/react-native-config/react-native-config):
+There are four environments: `dev`, `qa`, `uat` and `prod`. Each reads its settings from its own env file through [react-native-config](https://github.com/react-native-config/react-native-config):
 
-| Env | Env file | App name | Bundle / application ID | Android | iOS |
-|---|---|---|---|---|---|
-| dev | `.env.dev` | FIT Events Dev | `com.fitevents.dev` | `yarn android:dev` | `yarn ios:dev` |
-| staging | `.env.staging` | FIT Events Staging | `com.fitevents.staging` | `yarn android:staging` | `yarn ios:staging` |
-| prod | `.env.prod` | FIT Events | `com.fitevents` | `yarn android:prod` | `yarn ios:prod` |
+| Env | Env file | App name | Bundle / application ID | Link scheme | Android | iOS |
+|---|---|---|---|---|---|---|
+| dev | `.env.dev` | FIT Events Dev | `com.fitevents.dev` | `fitevents-dev://` | `yarn android:dev` | `yarn ios:dev` |
+| qa | `.env.qa` | FIT Events QA | `com.fitevents.qa` | `fitevents-qa://` | `yarn android:qa` | `yarn ios:qa` |
+| uat | `.env.uat` | FIT Events UAT | `com.fitevents.uat` | `fitevents-uat://` | `yarn android:uat` | `yarn ios:uat` |
+| prod | `.env.prod` | FIT Events | `com.fitevents` | `fitevents://` | `yarn android:prod` | `yarn ios:prod` |
 
 - Only `.env.example` is committed. Copy it to the env files you need and fill in the values.
 - `yarn android` and `yarn ios` run the dev environment.
-- Each environment installs as a separate app, so all three can sit on one device side by side.
+- Each environment installs as a separate app, so all four can sit on one device side by side. Prod has no ID suffix.
 - Env values are compiled into the native build. After you change an env file, rebuild the app; reloading Metro is not enough.
-- Android uses the `dev`, `staging` and `prod` product flavors.
-- iOS uses the `FITEvents-Dev`, `FITEvents-Staging` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
+- Android uses the `dev`, `qa`, `uat` and `prod` product flavors.
+- iOS uses the `FITEvents-Dev`, `FITEvents-QA`, `FITEvents-UAT` and `FITEvents-Prod` schemes, with matching `Debug-<Env>` / `Release-<Env>` build configurations.
+
+### Android release signing (from S4)
+
+Release builds are signed with a keystore you create yourself. Without one, release builds fall back to the debug key, which is fine for local testing but not for the Play Store.
+
+1. Create a keystore (keep the file and passwords private, and back them up):
+
+   ```sh
+   keytool -genkeypair -v -storetype PKCS12 -keystore android/app/release.keystore -alias fitevents -keyalg RSA -keysize 2048 -validity 10000
+   ```
+
+2. Copy `android/keystore.properties.example` to `android/keystore.properties` and fill in the passwords and alias.
+3. Build a signed release, for example `cd android && ./gradlew assembleProdRelease`.
+
+`android/keystore.properties`, `*.keystore` and `*.jks` are gitignored. Never commit them.
 
 ### Deep links (from S4)
 
-`fitevents://event/<id>` opens Event Detail. If you are signed out, the app keeps the link and opens it after you sign in. To try it:
+`<scheme>://event/<id>` opens Event Detail, where the scheme belongs to the build (see the Environments table: `fitevents-dev://event/<id>` in dev, `fitevents://event/<id>` in prod). If you are signed out, the app keeps the link and opens it after you sign in. To try it:
 
 ```sh
-xcrun simctl openurl booted fitevents://event/evt-001                                          # iOS simulator
-adb shell am start -W -a android.intent.action.VIEW -d fitevents://event/evt-001 com.fitevents.dev   # Android (dev)
+xcrun simctl openurl booted fitevents-dev://event/evt-001                                          # iOS simulator (dev)
+adb shell am start -W -a android.intent.action.VIEW -d fitevents-dev://event/evt-001 com.fitevents.dev   # Android (dev)
 ```
 
-The **Scan** tab reads QR codes with the camera and opens `fitevents://event/<id>` links the same way. Print one with `yarn mock:qr evt-001`. The iOS simulator has no camera, so test scanning on a real device.
+The **Scan** tab reads QR codes with the camera and opens event links of its own scheme the same way. Print one with `yarn mock:qr evt-001 <env>` (`dev` when you leave the env out); a QR code made for another env is rejected. The iOS simulator has no camera, so test scanning on a real device.
 
-All three environments register the same `fitevents` scheme. If more than one is installed, the OS picks which app opens the link.
+Each environment registers its own scheme, so the four apps can be installed together and a link always opens the right one. The scheme is set in three places that must stay in sync: `DEEP_LINK_SCHEME` in the env file (read by the app), `manifestPlaceholders` per flavor in `android/app/build.gradle`, and the `DEEP_LINK_SCHEME` build setting per configuration in the Xcode project.
 
 ### Event reminders (from S4)
 
@@ -127,7 +143,7 @@ On Event Detail, a bookmarked event has a **Remind me 30 min before** button. It
 | `yarn mock` | Mock API on port 3001 |
 | `yarn mock:seed` | Regenerate `mock-server/db.json` |
 | `yarn postinstall` | Re-apply dependency patches from `patches/` (see [patches/README.md](patches/README.md)) |
-| `yarn mock:qr <eventId>` | QR code PNG with `fitevents://event/<id>` for the Scan tab (`mock-server/qr/`) |
+| `yarn mock:qr <eventId> [env]` | QR code PNG with `<scheme>://event/<id>` for the Scan tab, using the scheme of `.env.<env>` (default `dev`) (`mock-server/qr/`) |
 
 Run `yarn lint && yarn typecheck && yarn test` before every commit. The pre-commit hook also auto-formats staged files and blocks the commit on type errors.
 
